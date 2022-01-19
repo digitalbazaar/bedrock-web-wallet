@@ -1,4 +1,4 @@
-{
+module.exports = {
   "env": {
     "mocha": true,
     "browser": true
@@ -7,4 +7,4 @@
     "assertNoError": true,
     "should": true
   }
-}
+};
