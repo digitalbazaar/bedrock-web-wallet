@@ -16,6 +16,9 @@
     "jsdoc": "^3.6.4",
     "jsdoc-to-markdown": "^6.0.1"
   },
+  "peerDependencies": {
+    "bedrock-web-session": "^3.0.0"
+  },
   "engines": {
     "node": ">=12"
   },
