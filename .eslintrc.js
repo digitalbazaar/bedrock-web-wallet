@@ -8,6 +8,6 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['digitalbazaar', 'digitalbazaar/jsdoc', 'digitalbazaar/vue'],
+  extends: ['digitalbazaar', 'digitalbazaar/jsdoc'],
   ignorePatterns: ['node_modules/']
 };
