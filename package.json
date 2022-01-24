@@ -15,7 +15,6 @@
     "@digitalbazaar/webkms-context": "^2.1.0",
     "@digitalbazaar/zcap": "^7.2.0",
     "ed25519-signature-2018-context": "^1.1.0",
-    "esm": "^3.2.25",
     "jsonld-signatures": "^9.3.1"
   },
   "devDependencies": {
