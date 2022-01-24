@@ -36,9 +36,7 @@
     "node": ">=12"
   },
   "files": [
-    "components/*",
-    "lib/*",
-    "routes/*"
+    "lib/*"
   ],
   "repository": {
     "type": "git",
