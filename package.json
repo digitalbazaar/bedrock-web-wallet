@@ -12,6 +12,8 @@
     "@digitalbazaar/http-client": "^2.0.1",
     "@digitalbazaar/lru-memoize": "^2.1.0",
     "@digitalbazaar/security-document-loader": "^1.1.1",
+    "@digitalbazaar/vc": "^2.1.0",
+    "@digitalbazaar/vpqr": "^2.1.0",
     "@digitalbazaar/webkms-context": "^2.1.0",
     "@digitalbazaar/zcap": "^7.2.0",
     "ed25519-signature-2018-context": "^1.1.0",
