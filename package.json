@@ -35,7 +35,7 @@
     "bedrock-web-profile-manager": "^10.1.0",
     "bedrock-web-pouch-edv": "^1.2.0",
     "bedrock-web-session": "^3.0.0",
-    "bedrock-web-vc-store": "^5.1.0"
+    "bedrock-web-vc-store": "^6.0.0"
   },
   "engines": {
     "node": ">=12"
