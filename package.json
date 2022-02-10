@@ -32,7 +32,7 @@
   "peerDependencies": {
     "bedrock-web": "^1.2.0",
     "bedrock-web-account": "^2.0.0",
-    "bedrock-web-profile-manager": "^10.1.0",
+    "bedrock-web-profile-manager": "^11.0.0",
     "bedrock-web-pouch-edv": "^1.2.0",
     "bedrock-web-session": "^3.0.0",
     "bedrock-web-vc-store": "^6.0.0"
