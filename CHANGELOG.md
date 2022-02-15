@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fix local credential query bugs.
+- Fix bundle filtering bugs.
 
 ## 1.0.0 - 2020-02-10
 
