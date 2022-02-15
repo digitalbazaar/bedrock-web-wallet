@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 1.0.1 - 2022-02-xx
+## 1.0.1 - 2022-02-15
 
 ### Fixed
 - Fix local credential query bugs.
