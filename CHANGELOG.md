@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 1.0.2 - 2022-02-xx
+## 1.0.2 - 2022-02-16
 
 ### Fixed
 - Fix typo in `reissue` query.
