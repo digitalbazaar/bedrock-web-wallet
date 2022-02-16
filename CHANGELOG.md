@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 1.0.3 - 2022-02-xx
+## 1.0.3 - 2022-02-16
 
 ### Fixed
 - Ensure photo VC is rebundled during age VC reissuance.
