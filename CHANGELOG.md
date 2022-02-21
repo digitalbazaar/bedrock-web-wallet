@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 1.1.0 - 2022-TBD
+## 1.1.0 - 2022-02-21
 
 ### Changed
 - Remove `_getReferenceId()` from `lib/config.js`.
