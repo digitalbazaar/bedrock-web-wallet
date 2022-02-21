@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 1.2.0 - 2022-TBD
+
+### Changed
+- Use `@digitalbazaar/age-verification-context` v1.0.
+
 ## 1.1.0 - 2022-02-21
 
 ### Changed
