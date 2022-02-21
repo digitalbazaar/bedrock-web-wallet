@@ -5,6 +5,7 @@
 ### Changed
 - Remove `_getReferenceId()` from `lib/config.js`.
 - Move `onboardLink` to config.
+
 ### Added
 - Add missing dependencies.
 
