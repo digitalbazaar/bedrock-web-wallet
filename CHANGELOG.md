@@ -3,7 +3,7 @@
 ## 1.1.0 - 2022-TBD
 
 ### Changed
-- Update `_getReferenceId()` to get hostname from URL.
+- Remove `_getReferenceId()` from `lib/config.js`.
 - Move `onboardLink` to config.
 ### Added
 - Add missing dependencies.
