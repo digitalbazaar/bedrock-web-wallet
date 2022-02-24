@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 2.1.0 - 2022-02-23
+
+### Added
+- Add `inbox` EDV on profile creation.
+
 ## 2.0.0 - 2022-02-23
 
 ### Changed
