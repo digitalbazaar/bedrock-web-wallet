@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 2.0.0 - 2022-02-xx
+## 2.0.0 - 2022-02-23
 
 ### Changed
 - **BREAKING**: Use `bedrock-web-profile-manager@12`,
