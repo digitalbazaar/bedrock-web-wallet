@@ -12,7 +12,7 @@
     "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
     "@digitalbazaar/ed25519-verification-key-2018": "^3.1.2",
     "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
-    "@digitalbazaar/edv-client": "^11.3.0",
+    "@digitalbazaar/edv-client": "^12.0.0",
     "@digitalbazaar/http-client": "^2.0.1",
     "@digitalbazaar/lru-memoize": "^2.1.0",
     "@digitalbazaar/security-document-loader": "^1.1.1",
@@ -38,8 +38,8 @@
   "peerDependencies": {
     "bedrock-web": "^1.2.0",
     "bedrock-web-account": "^2.0.0",
-    "bedrock-web-profile-manager": "^11.0.0",
-    "bedrock-web-pouch-edv": "^1.2.0",
+    "bedrock-web-profile-manager": "^12.0.0",
+    "bedrock-web-pouch-edv": "^2.0.0",
     "bedrock-web-session": "^3.0.0",
     "bedrock-web-vc-store": "^6.0.0"
   },

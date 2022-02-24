@@ -1,5 +1,13 @@
 # bedrock-web-wallet ChangeLog
 
+## 2.0.0 - 2022-02-xx
+
+### Changed
+- **BREAKING**: Use `bedrock-web-profile-manager@12`,
+  `@digitalbazaar/edv-client@12`, and `bedrock-web-pouch-edv@2`. These new
+  versions compute encrypted indexes for EDVs differently (more privacy
+  preserving) and are therefore incompatible with previous versions.
+
 ## 1.2.1 - 2022-02-23
 
 ### Fixed
