@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 1.2.1 - 2022-02-xx
+## 1.2.1 - 2022-02-23
 
 ### Fixed
 - Fix cache key for profile EDVs (add `referenceIdPrefix` to namespace).
