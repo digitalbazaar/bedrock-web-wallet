@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 3.0.0 - 2022-03-xx
+## 3.0.0 - 2022-03-01
 
 ### Changed
 - **BREAKING**: Use `@digitalbazaar/webkms-client@10` and
