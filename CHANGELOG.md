@@ -1,5 +1,13 @@
 # bedrock-web-wallet ChangeLog
 
+## 3.0.0 - 2022-03-xx
+
+### Changed
+- **BREAKING**: Use `@digitalbazaar/webkms-client@10` and
+  `@digitalbazaar/edv-client@13`.
+- **BREAKING**: Require `bedrock-web-profile-manager@13` and
+  `bedrock-web-pouch-edv@3` as a peer dependencies.
+
 ## 2.1.0 - 2022-02-23
 
 ### Added
