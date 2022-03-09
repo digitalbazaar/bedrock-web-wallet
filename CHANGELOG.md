@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 3.0.2 - 2022-03-xx
+## 3.0.2 - 2022-03-09
 
 ### Fixed
 - Ensure VC AV bundle is deleted if container VC ID was not given
