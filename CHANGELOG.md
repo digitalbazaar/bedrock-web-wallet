@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 3.0.1 - 2022-03-xx
+## 3.0.1 - 2022-03-09
 
 ### Fixed
 - Ensure `id` is set when passed to credential storage `delete`.
