@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 4.1.0 - 2022-03-xx
+
+### Changed
+- Improve age VC refresh code. If a local bundled age VC does
+  not match the remote copy, remove it and refresh the remote
+  copy.
+
 ## 4.0.0 - 2022-03-10
 
 ### Changed
