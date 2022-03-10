@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 4.1.0 - 2022-03-xx
+## 4.1.0 - 2022-03-10
 
 ### Changed
 - Improve age VC refresh code. If a local bundled age VC does
