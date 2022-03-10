@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 4.0.0 - 2022-03-xx
+
+### Changed
+- **BREAKING**: Use `@digitalbazaar/age-verification-context@2`.
+
 ## 3.0.2 - 2022-03-09
 
 ### Fixed

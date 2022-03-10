@@ -7,7 +7,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@digitalbazaar/age-verification-context": "^1.0.0",
+    "@digitalbazaar/age-verification-context": "^2.0.0",
     "@digitalbazaar/ed25519-signature-2018": "^2.0.1",
     "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
     "@digitalbazaar/ed25519-verification-key-2018": "^3.1.2",
