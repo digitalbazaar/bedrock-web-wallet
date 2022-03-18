@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 4.2.0 - 2022-03-xx
+
+### Changed
+- Remove unused config vars.
+
 ## 4.1.0 - 2022-03-10
 
 ### Changed
