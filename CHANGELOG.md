@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 4.3.0 - 2022-03-xx
+
+### Changed
+- Update peer deps:
+  - `bedrock-web-profile-manager@14`.
+
 ## 4.2.0 - 2022-03-18
 
 ### Changed
