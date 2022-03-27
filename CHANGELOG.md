@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 4.3.0 - 2022-03-xx
+## 4.3.0 - 2022-03-27
 
 ### Changed
 - Update peer deps:
