@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 4.3.1 - 2022-04-xx
+## 4.3.1 - 2022-04-06
 
 ### Fixed
 - Handle corrupted or invalidated age VCs during reissue process.
