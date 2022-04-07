@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 4.3.2 - 2022-04-xx
+## 4.3.2 - 2022-04-07
 
 ### Fixed
 - Delete remote age VC if personal photo is missing during reissue.
