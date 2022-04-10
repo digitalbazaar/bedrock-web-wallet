@@ -1,10 +1,14 @@
 /*!
  * Copyright (c) 2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import {config} from '@bedrock/core';
+import {fileURLToPath} from 'url';
+import path from 'path';
+import '@bedrock/https-agent';
+import '@bedrock/karma';
+import '@bedrock/mongodb';
 
-const {config} = require('bedrock');
-const path = require('path');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // MongoDB
 config.mongodb.name = 'bedrock_web_wallet_test';

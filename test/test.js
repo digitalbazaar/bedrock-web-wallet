@@ -1,12 +1,11 @@
-/*
+/*!
  * Copyright (c) 2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import * as bedrock from '@bedrock/core';
+import '@bedrock/https-agent';
+import '@bedrock/mongodb';
 
-const bedrock = require('bedrock');
-require('bedrock-https-agent');
-require('bedrock-mongodb');
-require('bedrock-test');
-require('bedrock-karma');
+import '@bedrock/test';
+import '@bedrock/karma';
 
 bedrock.start();
