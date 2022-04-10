@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 5.0.0 - 2022-04-xx
+
+### Changed
+- **BREAKING**: Rename package to `@bedrock/web-wallet`.
+- **BREAKING**: Convert to module (ESM).
+
 ## 4.3.2 - 2022-04-07
 
 ### Fixed
