@@ -15,6 +15,9 @@
 - **BREAKING**: Profile options must be passed separately from profile content
   in `createProfile`.
 
+### Removed
+- Remove unused `config.wallet.defaults.edvs.users` config variable.
+
 ## 5.0.0 - 2022-04-10
 
 ### Changed
