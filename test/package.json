@@ -19,7 +19,7 @@
     "@bedrock/test": "^7.0.0",
     "@bedrock/web": "^2.0.0",
     "@bedrock/web-pouch-edv": "^4.0.0",
-    "@bedrock/web-profile-manager": "^15.0.0",
+    "@bedrock/web-profile-manager": "^16.0.0",
     "@bedrock/web-session": "^4.0.0",
     "@bedrock/web-vc-store": "^7.0.0",
     "@bedrock/web-wallet": "file:.."
