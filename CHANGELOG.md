@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 6.0.1 - 2022-04-xx
+## 6.0.1 - 2022-04-19
 
 ### Fixed
 - Ensure remote container VC is deleted when no photo credential is present.
