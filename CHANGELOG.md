@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 6.1.0 - 2022-04-xx
+
+### Added
+- Add wallet inbox utilities.
+
 ## 6.0.1 - 2022-04-19
 
 ### Fixed
