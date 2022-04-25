@@ -3,7 +3,7 @@
   "version": "8.2.1-0",
   "type": "module",
   "description": "Bedrock Web Wallet",
-  "module": "./lib/index.js",
+  "exports": "./lib/index.js",
   "scripts": {
     "lint": "eslint ."
   },

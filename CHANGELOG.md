@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 9.0.0 - 2022-xx-xx
+
+### Changed
+- **BREAKING**: Use `exports` instead of `module`.
+
 ## 8.2.0 - 2022-08-11
 
 ### Added
