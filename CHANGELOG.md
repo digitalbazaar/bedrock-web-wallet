@@ -5,6 +5,7 @@
 ### Changed
 - **BREAKING**: Use `exports` instead of `module`.
 - Update dependencies.
+- Lint module.
 
 ## 8.2.0 - 2022-08-11
 
