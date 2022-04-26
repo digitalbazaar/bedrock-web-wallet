@@ -6,21 +6,21 @@
   "scripts": {
     "debug": "node --preserve-symlinks test.js test --framework karma --log-level debug",
     "test": "node --preserve-symlinks test.js test --framework karma",
-    "coverage": "node --preserve-symlinks test.js test --framework karma --config ./node_modules/@bedrock/karma/lib/coverageConfig.js",
-    "coverage-ci": "node --preserve-symlinks test.js test --framework karma --config ./node_modules/@bedrock/karma/lib/coverageConfig.js"
+    "coverage": "node --preserve-symlinks test.js test --framework karma-coverage",
+    "coverage-ci": "node --preserve-symlinks test.js test --framework karma-coverage-ci"
   },
   "dependencies": {
-    "@bedrock/core": "^5.0.0",
-    "@bedrock/express": "^7.0.0",
-    "@bedrock/https-agent": "^3.0.0",
-    "@bedrock/karma": "^3.0.0",
-    "@bedrock/mongodb": "^9.0.0",
-    "@bedrock/server": "^4.0.0",
-    "@bedrock/test": "^7.0.0",
-    "@bedrock/web": "^2.0.0",
+    "@bedrock/core": "^6.0.1",
+    "@bedrock/express": "^8.0.0",
+    "@bedrock/https-agent": "^4.0.0",
+    "@bedrock/karma": "^5.1.0",
+    "@bedrock/mongodb": "^10.0.0",
+    "@bedrock/server": "^5.0.0",
+    "@bedrock/test": "^8.0.5",
+    "@bedrock/web": "^2.0.1",
     "@bedrock/web-pouch-edv": "^5.0.0",
     "@bedrock/web-profile-manager": "^17.0.0",
-    "@bedrock/web-session": "^4.0.0",
+    "@bedrock/web-session": "^4.0.1",
     "@bedrock/web-vc-store": "^7.4.0",
     "@bedrock/web-wallet": "file:.."
   }
