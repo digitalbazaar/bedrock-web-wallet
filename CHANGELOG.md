@@ -4,6 +4,7 @@
 
 ### Changed
 - **BREAKING**: Use `exports` instead of `module`.
+- Update dependencies.
 
 ## 8.1.1 - 2022-06-03
 
