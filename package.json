@@ -2,7 +2,7 @@
   "name": "bedrock-web-wallet",
   "version": "4.3.0",
   "description": "Bedrock Web Wallet",
-  "module": "./lib/main.js",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint ."
   },
@@ -23,6 +23,7 @@
     "ajv": "^8.10.0",
     "did-veres-one": "14.0.0-beta.4",
     "ed25519-signature-2018-context": "^1.1.0",
+    "esm": "^3.2.25",
     "jsonld-signatures": "^9.3.1",
     "p-all": "^3.0.0",
     "p-map": "^4.0.0",
