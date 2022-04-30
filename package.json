@@ -12,24 +12,24 @@
   },
   "dependencies": {
     "@digitalbazaar/age-verification-context": "^2.0.0",
-    "@digitalbazaar/ed25519-signature-2018": "^2.1.0",
-    "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
-    "@digitalbazaar/ed25519-verification-key-2018": "^3.1.2",
-    "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
-    "@digitalbazaar/edv-client": "^14.0.0",
-    "@digitalbazaar/http-client": "^3.1.0",
-    "@digitalbazaar/lru-memoize": "^2.1.0",
-    "@digitalbazaar/security-document-loader": "^1.1.1",
-    "@digitalbazaar/vc": "^2.1.0",
-    "@digitalbazaar/vpqr": "^2.1.0",
+    "@digitalbazaar/ed25519-signature-2018": "^3.0.0",
+    "@digitalbazaar/ed25519-signature-2020": "^4.0.1",
+    "@digitalbazaar/ed25519-verification-key-2018": "^4.0.0",
+    "@digitalbazaar/ed25519-verification-key-2020": "^4.0.0",
+    "@digitalbazaar/edv-client": "^15.0.0",
+    "@digitalbazaar/http-client": "^3.2.0",
+    "@digitalbazaar/lru-memoize": "^3.0.0",
+    "@digitalbazaar/security-document-loader": "^2.0.0",
+    "@digitalbazaar/vc": "^4.0.0",
+    "@digitalbazaar/vpqr": "^3.0.0",
     "@digitalbazaar/webkms-context": "^2.1.0",
-    "@digitalbazaar/zcap": "^7.2.2",
+    "@digitalbazaar/zcap": "^8.0.0",
     "ajv": "^8.11.0",
-    "did-veres-one": "14.0.0-beta.4",
+    "did-veres-one": "^15.0.0",
     "ed25519-signature-2018-context": "^1.1.0",
-    "jsonld-signatures": "^9.3.1",
+    "jsonld-signatures": "^10.0.0",
     "p-all": "^4.0.0",
-    "p-map": "^5.3.0",
+    "p-map": "^5.5.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -41,12 +41,12 @@
     "jsdoc-to-markdown": "^7.1.1"
   },
   "peerDependencies": {
-    "@bedrock/web": "^2.0.0",
-    "@bedrock/web-account": "^3.0.0",
-    "@bedrock/web-profile-manager": "^17.2.0",
-    "@bedrock/web-pouch-edv": "^6.0.0",
-    "@bedrock/web-session": "^4.0.0",
-    "@bedrock/web-vc-store": "^7.4.0"
+    "@bedrock/web": "github:digitalbazaar/bedrock-web#convert-to-module",
+    "@bedrock/web-account": "github:digitalbazaar/bedrock-web-account#updates",
+    "@bedrock/web-pouch-edv": "github:digitalbazaar/bedrock-web-pouch-edv#convert-to-module",
+    "@bedrock/web-profile-manager": "github:digitalbazaar/bedrock-web-profile-manager#convert-to-module",
+    "@bedrock/web-session": "github:digitalbazaar/bedrock-web-session#convert-to-module",
+    "@bedrock/web-vc-store": "github:digitalbazaar/bedrock-web-vc-store#convert-to-module"
   },
   "engines": {
     "node": ">=14"
