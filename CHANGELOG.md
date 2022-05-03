@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 6.2.0 - 2022-05-xx
+## 6.2.0 - 2022-05-03
 
 ### Changed
 - Do not wait for non-critical deletion of VCs post reissue.
