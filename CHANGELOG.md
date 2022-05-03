@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 6.2.1 - 2022-05-xx
+
+### Fixed
+- Fix parsing of local EDV ID.
+
 ## 6.2.0 - 2022-05-03
 
 ### Changed
