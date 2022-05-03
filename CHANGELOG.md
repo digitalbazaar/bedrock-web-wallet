@@ -1,13 +1,13 @@
 # bedrock-web-wallet ChangeLog
 
-## 6.2.1 - 2022-05-03
+## 6.1.2 - 2022-05-03
 
 ### Fixed
 - Fix parsing of local EDV ID.
 
-## 6.2.0 - 2022-05-03
+## 6.1.1 - 2022-05-03
 
-### Changed
+### Fixed
 - Do not wait for non-critical deletion of VCs post reissue.
 
 ## 6.1.0 - 2022-04-22
