@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 7.1.0 - 2022-05-xx
+## 7.1.0 - 2022-05-12
 
 ### Changed
 - Optimistically fetch VCs during reissuance to reduce waiting on network
