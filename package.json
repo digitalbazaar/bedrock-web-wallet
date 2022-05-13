@@ -17,7 +17,7 @@
     "@digitalbazaar/ed25519-verification-key-2018": "github:digitalbazaar/ed25519-verification-key-2018#convert-to-module",
     "@digitalbazaar/ed25519-verification-key-2020": "github:digitalbazaar/ed25519-verification-key-2020#convert-to-module",
     "@digitalbazaar/edv-client": "github:digitalbazaar/edv-client#convert-to-module",
-    "@digitalbazaar/http-client": "^3.0.1",
+    "@digitalbazaar/http-client": "^3.1.0",
     "@digitalbazaar/lru-memoize": "github:digitalbazaar/lru-memoize#convert-to-module",
     "@digitalbazaar/security-document-loader": "github:digitalbazaar/security-document-loader#convert-to-module",
     "@digitalbazaar/vc": "^2.1.0",
@@ -33,7 +33,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "eslint-config-digitalbazaar": "^3.0.0",
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-unicorn": "^42.0.0",
