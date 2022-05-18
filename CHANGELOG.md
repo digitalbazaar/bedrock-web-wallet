@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 7.2.0 - 2022-05-xx
+
+### Changed
+- Use profile cache, if available, when processing inbox. Update
+  `@bedrock/web-profile-manager@17.1` peer dep to get profile cache feature.
+
 ## 7.1.0 - 2022-05-12
 
 ### Changed
