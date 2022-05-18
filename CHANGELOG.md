@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 7.2.0 - 2022-05-xx
+## 7.2.0 - 2022-05-17
 
 ### Changed
 - Use profile cache, if available, when processing inbox. Update
