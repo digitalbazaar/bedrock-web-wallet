@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 7.2.1 - 2022-05-xx
+## 7.2.1 - 2022-05-26
 
 ### Fixed
 - Ensure profile cache is updated after changing profile content on
