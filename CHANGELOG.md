@@ -1,5 +1,14 @@
 # bedrock-web-wallet ChangeLog
 
+## 7.3.0 - 2022-05-xx
+
+### Changed
+- Allow `profileId` to be optionally specified when starting an inbox
+  VC exchange; otherwise fallback to the default behavior of using
+  the first profile on the authenticated account.
+- Perform more steps in parallel when performing an inbox VC exchange to
+  improve performance.
+
 ## 7.2.1 - 2022-05-26
 
 ### Fixed
