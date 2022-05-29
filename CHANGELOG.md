@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 7.3.0 - 2022-05-xx
+## 7.3.0 - 2022-05-29
 
 ### Changed
 - Allow `profileId` to be optionally specified when starting an inbox
