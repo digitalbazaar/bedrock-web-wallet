@@ -1,6 +1,6 @@
 {
   "name": "@bedrock/web-wallet",
-  "version": "7.3.1-0",
+  "version": "8.0.0",
   "type": "module",
   "description": "Bedrock Web Wallet",
   "module": "./lib/index.js",
