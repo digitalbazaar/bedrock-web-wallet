@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 8.0.0 - 2022-05-xx
+## 8.0.0 - 2022-05-30
 
 ### Changed
 - **BREAKING**: Update peer deps:
