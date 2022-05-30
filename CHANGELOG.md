@@ -1,5 +1,15 @@
 # bedrock-web-wallet ChangeLog
 
+## 8.0.0 - 2022-05-xx
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - Use `@bedrock/web-pouch-edv@6`.
+- **BREAKING**: This version uses the new `indexeddb` adapter for better
+  performance and concurrency with the pouch EDV implementation. Old
+  pouch EDV storage will be made obsolete and not migrated or deleted;
+  new storage will be created.
+
 ## 7.3.0 - 2022-05-29
 
 ### Changed
