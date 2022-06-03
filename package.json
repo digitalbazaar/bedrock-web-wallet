@@ -42,7 +42,7 @@
     "@bedrock/web-profile-manager": "^17.2.0",
     "@bedrock/web-pouch-edv": "^6.0.0",
     "@bedrock/web-session": "^4.0.0",
-    "@bedrock/web-vc-store": "^7.0.0"
+    "@bedrock/web-vc-store": "^7.3.0"
   },
   "engines": {
     "node": ">=14"
