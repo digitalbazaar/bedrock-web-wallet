@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 8.1.1 - 2022-06-xx
+## 8.1.1 - 2022-06-03
 
 ### Fixed
 - Changed default store option to add bundle contents first *as a bug fix*.
