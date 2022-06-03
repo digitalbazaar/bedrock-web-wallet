@@ -1,5 +1,15 @@
 # bedrock-web-wallet ChangeLog
 
+## 8.1.0 - 2022-06-xx
+
+### Added
+- Add `options` section to `credentialStore[<store name>]`. These options
+  will be passed to the store when it is constructed and should be set
+  before initializing the wallet.
+
+### Changed
+- Update `@bedrock/web-vc-store` to v7.3 to get additional features.
+
 ## 8.0.0 - 2022-05-30
 
 ### Changed
