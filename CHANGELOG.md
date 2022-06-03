@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 8.1.0 - 2022-06-xx
+## 8.1.0 - 2022-06-03
 
 ### Added
 - Add `options` section to `credentialStore[<store name>]`. These options
