@@ -5,6 +5,10 @@
 ### Added
 - Add support for credentials without an `id` property.
 
+### Changed
+- Use `@bedrock/web-vc-store@7.4` to get storage features for VCs without
+  `id` property.
+
 ## 8.1.1 - 2022-06-03
 
 ### Fixed
