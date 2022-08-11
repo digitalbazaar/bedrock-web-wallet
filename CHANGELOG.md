@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 8.2.0 - 2022-08-xx
+## 8.2.0 - 2022-08-11
 
 ### Added
 - Add support for credentials without an `id` property.
