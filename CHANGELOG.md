@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 9.0.1 - TBD
+
+### Fixed
+- Use `startsWith` for DID method checks.
+
 ## 9.0.0 - 2022-08-19
 
 ### Changed
