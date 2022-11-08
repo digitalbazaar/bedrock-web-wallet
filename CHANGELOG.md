@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 9.1.0 - 2022-11-dd
+
+### Changed
+- Remove unnecessary proof type checks on received VCs.
+
 ## 9.0.1 - 2022-09-22
 
 ### Fixed
