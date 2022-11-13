@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 10.0.0 - 2022-11-dd
+## 10.0.0 - 2022-11-13
 
 ### Changed
 - **BREAKING**: Update signature / vc libraries to get better safe mode
