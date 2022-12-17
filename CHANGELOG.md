@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 10.0.1 - 2022-12-dd
+## 10.0.1 - 2022-12-17
 
 ### Fixed
 - Do not throw for expired age verification credentials during reissuance
