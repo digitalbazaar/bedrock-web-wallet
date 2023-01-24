@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "@bedrock/web": "^3.0.0",
-    "@bedrock/web-account": "^4.0.0",
+    "@bedrock/web-account": "^5.0.0",
     "@bedrock/web-pouch-edv": "^7.0.0",
     "@bedrock/web-profile-manager": "^19.0.0",
     "@bedrock/web-session": "^5.0.0",

@@ -1,5 +1,14 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.0.0 - 2023-01-dd
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - `@bedrock/web-account@5`.
+  - This requires an indirect dependency of `@bedrock/account@9` that
+    changes include database layout and record format changes that are
+    incompatible with previous releases.
+
 ## 10.0.1 - 2022-12-17
 
 ### Fixed
