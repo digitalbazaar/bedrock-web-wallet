@@ -5,6 +5,7 @@
 ### Fixed
 - Merge the contents of `profileContent` to the `profile` returned from
   `createProfile()` in `lib/helpers.js`.
+- Add `didMethod` field to the profile returned from `createProfile()`.
 
 ## 11.0.0 - 2023-01-24
 
