@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.0.1 - 2023-TBD
+## 11.0.1 - 2023-02-09
 
 ### Fixed
 - Merge the contents of `profileContent` to the `profile` returned from
