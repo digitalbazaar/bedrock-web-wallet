@@ -3,8 +3,8 @@
 ## 11.0.1 - 2023-TBD
 
 ### Fixed
-- Add `profileContent` fields `name`, `color` and `shared` to the `profile`
-  returned from `createProfile()` in `lib/helpers.js`.
+- Merge the contents of `profileContent` to the `profile` returned from
+  `createProfile()` in `lib/helpers.js`.
 
 ## 11.0.0 - 2023-01-24
 
