@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.1.0 - 2023-03-TBD
+
+### Changed
+- Update `webLoader()` to attempt parsing json from the response body if
+  there isn't data on the response.
+
 ## 11.0.1 - 2023-02-09
 
 ### Fixed
