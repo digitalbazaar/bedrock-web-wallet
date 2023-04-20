@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.1.0 - 2023-TBD
+## 11.1.0 - 2023-04-20
 
 ### Added
 - Add `eddsa-2022` to supported signature suites.
