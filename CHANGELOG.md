@@ -3,7 +3,7 @@
 ## 11.1.0 - 2023-TBD
 
 ### Added
-- Add `eddsa` to supported signature suites.
+- Add `eddsa-2022` to supported signature suites.
 
 ## 11.0.1 - 2023-02-09
 
