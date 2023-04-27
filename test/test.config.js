@@ -7,6 +7,7 @@ import {fileURLToPath} from 'url';
 import path from 'path';
 import '@bedrock/https-agent';
 import '@bedrock/karma';
+import '@bedrock/session-http';
 import '@bedrock/mongodb';
 
 const require = createRequire(import.meta.url);
