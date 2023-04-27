@@ -26,7 +26,7 @@ config['https-agent'].rejectUnauthorized = false;
 
 config.karma.suites['bedrock-web-wallet'] = path.join('web', '**', '*.js');
 config.karma.config.proxies = {
-  '/': 'https://localhost:18443'
+  '/': 'https://localhost:18443/'
 };
 config.karma.config.proxyValidateSSL = false;
 config.karma.config.webpack.resolve.fallback.events =
