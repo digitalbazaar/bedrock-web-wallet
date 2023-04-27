@@ -2,12 +2,14 @@
  * Copyright (c) 2022 Digital Bazaar, Inc. All rights reserved.
  */
 import {config} from '@bedrock/core';
+import {createRequire} from 'node:module';
 import {fileURLToPath} from 'url';
 import path from 'path';
 import '@bedrock/https-agent';
 import '@bedrock/karma';
 import '@bedrock/mongodb';
 
+const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // MongoDB
@@ -27,3 +29,5 @@ config.karma.config.proxies = {
   '/': 'https://localhost:18443'
 };
 config.karma.config.proxyValidateSSL = false;
+config.karma.config.webpack.resolve.fallback.events =
+  require.resolve('events/');

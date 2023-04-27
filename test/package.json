@@ -23,6 +23,8 @@
     "@bedrock/web-profile-manager": "^19.0.0",
     "@bedrock/web-session": "^5.0.0",
     "@bedrock/web-vc-store": "^8.0.0",
-    "@bedrock/web-wallet": "file:.."
+    "@bedrock/web-wallet": "file:..",
+    "events": "^3.3.0",
+    "vue": "^3.2.47"
   }
 }
