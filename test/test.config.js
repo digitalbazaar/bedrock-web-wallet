@@ -7,7 +7,6 @@ import {fileURLToPath} from 'url';
 import path from 'path';
 import '@bedrock/https-agent';
 import '@bedrock/karma';
-import '@bedrock/account';
 import '@bedrock/account-http';
 import '@bedrock/profile-http';
 import '@bedrock/session-http';

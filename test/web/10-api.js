@@ -10,11 +10,12 @@ import {v4 as uuid} from 'uuid';
 describe('presentations.sign()', function() {
   let profile;
   before(async () => {
+    // initialize web wallet
+    await webWallet.initialize();
+
     // create an account for test
     const testEmail = `test-${uuid()}@example.com`;
     await createAccount({email: testEmail});
-    // initialize web wallet
-    await webWallet.initialize();
     // create a profile
     const profile = await createProfile({
       name: 'br-web-wallet-test',

@@ -10,7 +10,6 @@
     "coverage-ci": "node --preserve-symlinks test.js test --framework karma-coverage-ci"
   },
   "dependencies": {
-    "@bedrock/account": "^9.0.0",
     "@bedrock/account-http": "^7.0.1",
     "@bedrock/core": "^6.0.1",
     "@bedrock/express": "^8.0.0",
