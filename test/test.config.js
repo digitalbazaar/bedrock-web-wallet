@@ -7,6 +7,7 @@ import {fileURLToPath} from 'url';
 import path from 'path';
 import '@bedrock/https-agent';
 import '@bedrock/karma';
+import '@bedrock/express';
 import '@bedrock/account-http';
 import '@bedrock/profile-http';
 import '@bedrock/session-http';
@@ -26,6 +27,9 @@ config.mocha.tests.push(path.join(__dirname, 'mocha'));
 
 // allow self-signed certs in test framework
 config['https-agent'].rejectUnauthorized = false;
+
+// use session
+config.express.useSession = true;
 
 config.karma.suites['bedrock-web-wallet'] = path.join('web', '**', '*.js');
 config.karma.config.proxies = {
