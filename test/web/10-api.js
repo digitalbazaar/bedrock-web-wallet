@@ -3,39 +3,23 @@
  */
 import * as vc from '@digitalbazaar/vc';
 import * as webWallet from '@bedrock/web-wallet';
+import {createAccount, createProfile} from './helpers.js';
 import {mockCredential} from './mock-data.js';
 import {v4 as uuid} from 'uuid';
 
 describe('presentations.sign()', function() {
   let profile;
   before(async () => {
+    // create an account for test
+    const testEmail = `test-${uuid()}@example.com`;
+    await createAccount({email: testEmail});
     // initialize web wallet
     await webWallet.initialize();
-    const testEmail = `test-${uuid()}@email.com`;
     // create a profile
-    const profileContent = {
-      name: 'test',
-      shared: false,
-      type: [
-        'User',
-        'Person'
-      ]
-    };
-    const profileAgentContent = {
-      email: testEmail,
-      name: 'root',
-      type: ['User', 'Person'],
-      access: 'full'
-    };
-    const profileOptions = {
-      didMethod: 'v1',
-      didOptions: {
-        mode: 'test'
-      }
-    };
-    ({profile} = await webWallet.helpers.createProfile({
-      profileAgentContent, profileContent, profileOptions
-    }));
+    const profile = await createProfile({
+      name: 'br-web-wallet-test',
+      email: testEmail
+    });
     console.log(profile, '<><><><>profile');
   });
   it('should successfully sign a presentation with accepted proof type ' +
