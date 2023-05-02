@@ -43,3 +43,14 @@ export async function createProfile({name, email, accountId}) {
     profileAgentContent, profileContent, profileOptions
   });
 }
+
+export function assertSignedPresentation({
+  signedPresentation, credential, presentationId, profileId, expectedProofType
+} = {}) {
+  signedPresentation.verifiableCredential[0].should.eql(credential);
+  signedPresentation.type.should.eql(['VerifiablePresentation']);
+  signedPresentation.id.should.equal(presentationId);
+  signedPresentation.holder.should.equal(profileId);
+  signedPresentation.should.have.property('proof');
+  signedPresentation.proof.type.should.eql(expectedProofType);
+}
