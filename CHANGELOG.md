@@ -3,8 +3,9 @@
 ## 11.2.0 - 2023-TBD
 
 ### Added
-- Throw error if `acceptedProofTypes` is provided but no matching signature
-  suite is found in `presentations.sign()`.
+- Check if the signer type is included in "acceptedProofTypes" and throw if it
+  isn't in `presentations.sign()`, i.e if "acceptedProofTypes" is specified,
+  then "Ed25519Signature2020" must be included in the list as one of the types.
 - Add tests for `presentations.sign()`.
 
 ### Fixed
