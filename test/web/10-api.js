@@ -1,18 +1,16 @@
 /*!
  * Copyright (c) 2022-2023 Digital Bazaar, Inc. All rights reserved.
  */
-import * as vc from '@digitalbazaar/vc';
 import * as webWallet from '@bedrock/web-wallet';
 import {
-  assertSignedPresentation, createProfile, initializeWebWallet
+  assertSignedPresentation, createProfile, createUnsignedPresentation,
+  initializeWebWallet
 } from './helpers.js';
 import {v4 as uuid} from 'uuid';
 import {mockCredential as verifiableCredential} from './mock-data.js';
 
 describe('presentations.sign()', function() {
   let profileId;
-  let unsignedPresentation;
-  const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
   const challenge = '48456d02-cfb8-4c7f-a50f-1c0d75ceaca1';
   const domain = window.location.origin;
   before(async () => {
@@ -30,16 +28,15 @@ describe('presentations.sign()', function() {
       accountId
     });
     profileId = profile.id;
-    // create an unsigned presentation
-    unsignedPresentation = vc.createPresentation({
-      holder: profileId,
-      id: presentationId,
-      verifiableCredential
-    });
   });
   it('should successfully sign a presentation with default proof type ' +
     '"Ed25519Signature2018" if no "acceptedProofTypes" is provided.',
   async () => {
+    // create unsigned presentation
+    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
+    const unsignedPresentation = createUnsignedPresentation({
+      profileId, verifiableCredential, presentationId
+    });
     let signedPresentation;
     let err;
     try {
@@ -56,12 +53,17 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      acceptedProofTypes: 'Ed25519Signature2018'
+      expectedProofType: 'Ed25519Signature2018'
     });
   });
   it('should successfully sign a presentation with default proof type ' +
     '"Ed25519Signature2018" if "acceptedProofTypes" is an empty array.',
   async () => {
+    // create unsigned presentation
+    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c4147';
+    const unsignedPresentation = createUnsignedPresentation({
+      profileId, verifiableCredential, presentationId
+    });
     let signedPresentation;
     let err;
     try {
@@ -83,7 +85,12 @@ describe('presentations.sign()', function() {
     });
   });
   it('should successfully sign a presentation with "acceptedProofTypes" ' +
-    'eddsa-2022.', async () => {
+    '"eddsa-2022".', async () => {
+    // create unsigned presentation
+    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c5157';
+    const unsignedPresentation = createUnsignedPresentation({
+      profileId, verifiableCredential, presentationId
+    });
     let signedPresentation;
     let err;
     try {
@@ -102,7 +109,34 @@ describe('presentations.sign()', function() {
       presentationId,
       profileId,
       expectedProofType: 'DataIntegrityProof',
-      cryptosuite: 'eddsa-2022'
+      expectedCryptosuite: 'eddsa-2022'
+    });
+  });
+  it('should successfully sign a presentation with "acceptedProofTypes" ' +
+    '"Ed25519Signature2020".', async () => {
+    // create unsigned presentation
+    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c6167';
+    const unsignedPresentation = createUnsignedPresentation({
+      profileId, verifiableCredential, presentationId
+    });
+    let signedPresentation;
+    let err;
+    try {
+      signedPresentation = await webWallet.presentations.sign({
+        challenge, domain, profileId, presentation: unsignedPresentation,
+        acceptedProofTypes: [{name: 'Ed25519Signature2020'}]
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.not.exist(err);
+    should.exist(signedPresentation);
+    assertSignedPresentation({
+      signedPresentation,
+      credential: verifiableCredential,
+      presentationId,
+      profileId,
+      expectedProofType: 'Ed25519Signature2020'
     });
   });
 });
