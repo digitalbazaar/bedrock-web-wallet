@@ -266,6 +266,6 @@ describe('presentations.sign()', function() {
     }
     should.exist(err);
     should.not.exist(signedPresentation);
-    err.message.should.contain('Unsupported proof types');
+    err.message.should.contain('No accepted proof type');
   });
 });
