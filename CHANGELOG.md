@@ -1,5 +1,16 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.2.0 - 2023-TBD
+
+### Added
+- Throw error if `acceptedProofTypes` is provided but no matching signature
+  suite is found in `presentations.sign()`.
+- Add tests for `presentations.sign()`.
+
+### Fixed
+- Fix conditionals to check if `acceptedProofTypes` is a non empty array in
+  `presentations.sign()`.
+
 ## 11.1.0 - 2023-04-20
 
 ### Added
