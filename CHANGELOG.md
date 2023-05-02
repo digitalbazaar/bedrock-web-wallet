@@ -8,7 +8,7 @@
 - Add tests for `presentations.sign()`.
 
 ### Fixed
-- Fix conditionals to check if `acceptedProofTypes` is a non empty array in
+- Fix conditionals to check if `acceptedProofTypes` is a non-empty array in
   `presentations.sign()`.
 
 ## 11.1.0 - 2023-04-20
