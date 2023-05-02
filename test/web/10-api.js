@@ -27,7 +27,8 @@ describe('presentations.sign()', function() {
     }));
   });
   it('should successfully sign a presentation with default proof type ' +
-    '"Ed25519Signature2018"', async () => {
+    '"Ed25519Signature2018" if no "acceptedProofTypes" is provided.',
+  async () => {
     const profileId = profile.id;
     const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
     const unsignedPresentation = vc.createPresentation({
@@ -43,6 +44,39 @@ describe('presentations.sign()', function() {
         domain: window.location.origin,
         presentation: unsignedPresentation,
         profileId
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.not.exist(err);
+    should.exist(signedPresentation);
+    assertSignedPresentation({
+      signedPresentation,
+      credential: mockCredential,
+      presentationId,
+      profileId,
+      expectedProofType: 'Ed25519Signature2018'
+    });
+  });
+  it('should successfully sign a presentation with default proof type ' +
+    '"Ed25519Signature2018" if "acceptedProofTypes" is an empty array.',
+  async () => {
+    const profileId = profile.id;
+    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
+    const unsignedPresentation = vc.createPresentation({
+      holder: profileId,
+      id: presentationId,
+      verifiableCredential: mockCredential
+    });
+    let signedPresentation;
+    let err;
+    try {
+      signedPresentation = await webWallet.presentations.sign({
+        challenge: '48456d02-cfb8-4c7f-a50f-1c0d75ceaca1',
+        domain: window.location.origin,
+        presentation: unsignedPresentation,
+        profileId,
+        acceptedProofType: []
       });
     } catch(e) {
       err = e;
