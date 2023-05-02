@@ -45,7 +45,8 @@ export async function createProfile({name, email, accountId}) {
 }
 
 export function assertSignedPresentation({
-  signedPresentation, credential, presentationId, profileId, expectedProofType
+  signedPresentation, credential, presentationId, profileId, expectedProofType,
+  cryptosuite
 } = {}) {
   signedPresentation.verifiableCredential[0].should.eql(credential);
   signedPresentation.type.should.eql(['VerifiablePresentation']);
@@ -53,4 +54,7 @@ export function assertSignedPresentation({
   signedPresentation.holder.should.equal(profileId);
   signedPresentation.should.have.property('proof');
   signedPresentation.proof.type.should.eql(expectedProofType);
+  if(cryptosuite) {
+    signedPresentation.proof.cryptosuite.should.eql(cryptosuite);
+  }
 }

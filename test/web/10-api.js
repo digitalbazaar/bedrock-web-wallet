@@ -6,11 +6,15 @@ import * as webWallet from '@bedrock/web-wallet';
 import {
   assertSignedPresentation, createProfile, initializeWebWallet
 } from './helpers.js';
-import {mockCredential} from './mock-data.js';
 import {v4 as uuid} from 'uuid';
+import {mockCredential as verifiableCredential} from './mock-data.js';
 
 describe('presentations.sign()', function() {
-  let profile;
+  let profileId;
+  let unsignedPresentation;
+  const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
+  const challenge = '48456d02-cfb8-4c7f-a50f-1c0d75ceaca1';
+  const domain = window.location.origin;
   before(async () => {
     // initialize web wallet
     const edvBaseUrl = `${window.location.origin}/edvs`;
@@ -20,30 +24,27 @@ describe('presentations.sign()', function() {
     const accountId = 'urn:uuid:ffaf5d84-7dc2-4f7b-9825-cc8d2e5a5d06';
 
     // create a profile for test
-    ({profile} = await createProfile({
+    const {profile} = await createProfile({
       name: 'test-profile',
       email: testEmail,
       accountId
-    }));
+    });
+    profileId = profile.id;
+    // create an unsigned presentation
+    unsignedPresentation = vc.createPresentation({
+      holder: profileId,
+      id: presentationId,
+      verifiableCredential
+    });
   });
   it('should successfully sign a presentation with default proof type ' +
     '"Ed25519Signature2018" if no "acceptedProofTypes" is provided.',
   async () => {
-    const profileId = profile.id;
-    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
-    const unsignedPresentation = vc.createPresentation({
-      holder: profileId,
-      id: presentationId,
-      verifiableCredential: mockCredential
-    });
     let signedPresentation;
     let err;
     try {
       signedPresentation = await webWallet.presentations.sign({
-        challenge: '48456d02-cfb8-4c7f-a50f-1c0d75ceaca1',
-        domain: window.location.origin,
-        presentation: unsignedPresentation,
-        profileId
+        challenge, domain, profileId, presentation: unsignedPresentation,
       });
     } catch(e) {
       err = e;
@@ -52,31 +53,21 @@ describe('presentations.sign()', function() {
     should.exist(signedPresentation);
     assertSignedPresentation({
       signedPresentation,
-      credential: mockCredential,
+      credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'Ed25519Signature2018'
+      acceptedProofTypes: 'Ed25519Signature2018'
     });
   });
   it('should successfully sign a presentation with default proof type ' +
     '"Ed25519Signature2018" if "acceptedProofTypes" is an empty array.',
   async () => {
-    const profileId = profile.id;
-    const presentationId = 'urn:uuid:3e793029-d699-4096-8e74-5ebd956c3137';
-    const unsignedPresentation = vc.createPresentation({
-      holder: profileId,
-      id: presentationId,
-      verifiableCredential: mockCredential
-    });
     let signedPresentation;
     let err;
     try {
       signedPresentation = await webWallet.presentations.sign({
-        challenge: '48456d02-cfb8-4c7f-a50f-1c0d75ceaca1',
-        domain: window.location.origin,
-        presentation: unsignedPresentation,
-        profileId,
-        acceptedProofType: []
+        challenge, domain, profileId, presentation: unsignedPresentation,
+        acceptedProofTypes: []
       });
     } catch(e) {
       err = e;
@@ -85,10 +76,33 @@ describe('presentations.sign()', function() {
     should.exist(signedPresentation);
     assertSignedPresentation({
       signedPresentation,
-      credential: mockCredential,
+      credential: verifiableCredential,
       presentationId,
       profileId,
       expectedProofType: 'Ed25519Signature2018'
+    });
+  });
+  it('should successfully sign a presentation with "acceptedProofTypes" ' +
+    'eddsa-2022.', async () => {
+    let signedPresentation;
+    let err;
+    try {
+      signedPresentation = await webWallet.presentations.sign({
+        challenge, domain, profileId, presentation: unsignedPresentation,
+        acceptedProofTypes: [{name: 'eddsa-2022'}]
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.not.exist(err);
+    should.exist(signedPresentation);
+    assertSignedPresentation({
+      signedPresentation,
+      credential: verifiableCredential,
+      presentationId,
+      profileId,
+      expectedProofType: 'DataIntegrityProof',
+      cryptosuite: 'eddsa-2022'
     });
   });
 });
