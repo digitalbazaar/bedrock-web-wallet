@@ -1,29 +1,15 @@
 /*!
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
-import * as webSession from '@bedrock/web-session';
 import * as webWallet from '@bedrock/web-wallet';
-import {RegisterController} from '@bedrock/web-account';
+import {config} from '@bedrock/web';
 
-export async function createAccount({email}) {
-  if(webSession.session) {
-    await webSession.session.end();
-  }
-  const ctrl = new RegisterController();
-  ctrl.state.email = email;
-  let account;
-  try {
-    account = await ctrl.register();
-  } catch(e) {
-    console.log(e);
-    throw e;
-  }
-  await webSession.session.refresh();
-  console.log(account, '<><><>account');
-  return account;
+export async function initializeWebWallet({edvBaseUrl}) {
+  config.wallet.defaults.edvBaseUrl = edvBaseUrl;
+  await webWallet.initialize();
 }
 
-export async function createProfile({name, email}) {
+export async function createProfile({name, email, accountId}) {
   const profileContent = {
     name,
     shared: false,
@@ -44,8 +30,16 @@ export async function createProfile({name, email}) {
       mode: 'test'
     }
   };
-  const {profile} = await webWallet.helpers.createProfile({
+  // Add account id to session
+  webWallet.profileManager.session.data = {
+    account: {
+      id: accountId
+    }
+  };
+  // Add account id to profileManager
+  webWallet.profileManager.accountId = accountId;
+
+  return webWallet.helpers.createProfile({
     profileAgentContent, profileContent, profileOptions
   });
-  return profile;
 }
