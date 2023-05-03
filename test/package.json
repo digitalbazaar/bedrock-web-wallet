@@ -22,6 +22,7 @@
     "@bedrock/meter-http": "^10.1.0",
     "@bedrock/meter-usage-reporter": "^8.0.0",
     "@bedrock/mongodb": "^10.0.0",
+    "@bedrock/passport": "^11.0.0",
     "@bedrock/profile": "^22.0.1",
     "@bedrock/profile-http": "^22.0.0",
     "@bedrock/server": "^5.0.0",
