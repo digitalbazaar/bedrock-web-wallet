@@ -3,9 +3,10 @@
 ## 11.2.0 - 2023-TBD
 
 ### Added
-- Check if the signer type is included in "acceptedProofTypes" and throw if it
-  isn't in `presentations.sign()`, i.e if "acceptedProofTypes" is specified,
-  then "Ed25519Signature2020" must be included in the list as one of the types.
+- Throw an error if the profile used in `presentations.sign()` (by passing
+  `profileId`) cannot sign using one of the passed `acceptedProofTypes`.
+  Practically speaking, only the `Ed25519Signature2020` proof type is supported
+  at this time.
 - Add tests for `presentations.sign()`.
 
 ### Fixed
