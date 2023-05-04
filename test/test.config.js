@@ -46,6 +46,12 @@ config.karma.config.proxies = {
 config.karma.config.proxyValidateSSL = false;
 config.karma.config.webpack.resolve.fallback.events =
   require.resolve('events/');
+config.karma.config.webpack.resolve = {
+  modules: [
+    path.resolve(__dirname, '..', 'node_modules'),
+    path.resolve(__dirname, 'node_modules')
+  ]
+};
 
 // do not fetch v1 dids from testnet
 config['did-io'].methodOverrides.v1.disableFetch = true;
