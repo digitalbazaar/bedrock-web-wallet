@@ -127,9 +127,7 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [
-          {name: 'eddsa-2022'}, {name: 'Ed25519Signature2020'}
-        ]
+        acceptedProofTypes: [{name: 'eddsa-2022'}]
       });
     } catch(e) {
       err = e;
@@ -210,13 +208,11 @@ describe('presentations.sign()', function() {
       [
         {name: 'unsupportedType'},
         {name: 'eddsa-2022'},
-        {name: 'Ed25519Signature2020'}
       ],
       [
         {name: 'unsupportedType'},
         {name: 'eddsa-2022'},
         {name: 'unsupportedType'},
-        {name: 'Ed25519Signature2020'}
       ]
     ];
     let signedPresentation;
@@ -270,8 +266,9 @@ describe('presentations.sign()', function() {
     }
     should.exist(err);
     should.not.exist(signedPresentation);
-    err.message.should.equal(
-      '"acceptedProofTypes" must contain signer type "Ed25519Signature2020".'
+    console.log(err.message, 'message');
+    err.message.should.contain(
+      'There is no proof type that matches one of the accepted proof types'
     );
   });
 });
