@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.2.0 - 2023-TBD
+## 11.2.0 - 2023-05-05
 
 ### Added
 - Throw an error if the profile used in `presentations.sign()` (by passing
