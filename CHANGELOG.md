@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.2.1 - 2023-05-TDB
+
+### Fixed
+- Enable key type `Ed25519VerificationKey2020` to be used with ed25519
+  cryptosuites (`Ed25519Signature2018`, `Ed25519Signature2020`, or
+  `eddsa-2022`).
+
 ## 11.2.0 - 2023-05-05
 
 ### Added
