@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.2.1 - 2023-05-TDB
+## 11.2.1 - 2023-05-05
 
 ### Fixed
 - Enable key type `Ed25519VerificationKey2020` to be used with ed25519
