@@ -267,7 +267,7 @@ describe('presentations.sign()', function() {
     should.exist(err);
     should.not.exist(signedPresentation);
     err.message.should.contain(
-      'There is no proof type that matches one of the accepted proof types'
+      'No supported proof type matches one of the accepted proof types'
     );
   });
 });
