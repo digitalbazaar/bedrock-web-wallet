@@ -266,7 +266,6 @@ describe('presentations.sign()', function() {
     }
     should.exist(err);
     should.not.exist(signedPresentation);
-    console.log(err.message, 'message');
     err.message.should.contain(
       'There is no proof type that matches one of the accepted proof types'
     );
