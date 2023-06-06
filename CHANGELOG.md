@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.2.2 - 2023-06-xx
+
+### Fixed
+- Add a `cryptoSuites.supported` alias for `cryptosuites.supportedSuites`. The
+  exported value was renamed in the minor 11.2.0 release without backwards API
+  compatibility support.
+
 ## 11.2.1 - 2023-05-05
 
 ### Fixed
