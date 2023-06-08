@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.2.2 - 2023-06-xx
+## 11.2.2 - 2023-06-08
 
 ### Fixed
 - Add a `cryptoSuites.supported` alias for `cryptosuites.supportedSuites`. The
