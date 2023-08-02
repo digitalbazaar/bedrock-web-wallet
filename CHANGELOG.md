@@ -1,5 +1,21 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.3.0 - 2023-08-dd
+
+### Added
+- Add `exchanges` export with `start()` function for starting an exchange
+  based off of a CHAPI event. The returned `exchange` instance has an API
+  that allows the next step of the exchange to be executed by calling `next()`,
+  which returns a WHATWG streams-like result of `{value, done: true|false}`.
+  The returned value is expected to be either `null` (only when `done` is
+  `true`) or an object including one or both of `verifiablePresentation` or
+  `verifiablePresentationRequest` indicating data to store and / or data
+  that is requested (respectfully). Once the exchange is complete, the
+  boolean `done` is set to `true`. The exchange can be closed via `close()`
+  without error or with an error (by passing `{error}`) and must be
+  closed after `done` is `true`. It can be canceled prematurely by calling
+  `cancel()`.
+
 ## 11.2.2 - 2023-06-08
 
 ### Fixed
