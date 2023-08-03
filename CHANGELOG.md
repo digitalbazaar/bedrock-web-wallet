@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.3.1 - 2023-08-dd
+## 11.3.1 - 2023-08-03
 
 ### Fixed
 - Block list fake VC API demo exchange URLs.
