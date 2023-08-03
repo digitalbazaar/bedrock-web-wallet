@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.3.0 - 2023-08-dd
+## 11.3.0 - 2023-08-03
 
 ### Added
 - Add `exchanges` export with `start()` function for starting an exchange
@@ -15,6 +15,7 @@
   without error or with an error (by passing `{error}`) and must be
   closed after `done` is `true`. It can be canceled prematurely by calling
   `cancel()`.
+- Add support for OID4VCI and VCAPI exchanges.
 
 ## 11.2.2 - 2023-06-08
 
