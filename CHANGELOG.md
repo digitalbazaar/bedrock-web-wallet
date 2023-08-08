@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.3.2 - 2023-08-dd
+
+### Fixed
+- Use `console.warn` instead of `console.error` on VP that cannot be
+  parsed for CHAPI direct exchange processing.
+
 ## 11.3.1 - 2023-08-03
 
 ### Fixed
