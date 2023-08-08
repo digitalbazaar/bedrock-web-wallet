@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.3.3 - 2023-08-dd
+## 11.3.3 - 2023-08-08
 
 ### Fixed
 - Fix parsing of `protocols` in CHAPI store events.
