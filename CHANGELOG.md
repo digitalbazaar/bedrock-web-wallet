@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 11.3.2 - 2023-08-dd
+## 11.3.2 - 2023-08-08
 
 ### Fixed
 - Use `console.warn` instead of `console.error` on VP that cannot be
