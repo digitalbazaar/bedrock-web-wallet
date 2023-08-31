@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 11.4.1 - 2023-08-dd
+
+### Fixed
+- Do not cache VPR from CHAPI event if it is empty.
+
 ## 11.4.0 - 2023-08-09
 
 ### Changed
