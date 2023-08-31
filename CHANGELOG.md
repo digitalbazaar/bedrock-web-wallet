@@ -4,6 +4,7 @@
 
 ### Fixed
 - Do not cache VPR from CHAPI event if it is empty.
+- Allow empty verifiable presentation in exchange; treat as `null`.
 
 ## 11.4.0 - 2023-08-09
 
