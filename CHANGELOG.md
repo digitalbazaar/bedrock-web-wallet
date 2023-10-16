@@ -1,5 +1,30 @@
 # bedrock-web-wallet ChangeLog
 
+## 12.0.0 - 2023-10-TBD
+
+### Changed
+- **BREAKING**: Drop support for Node.js < 18.
+- Update deps:
+  - Use `@digitalbazaar/edv-client@16.0`. Drops support for Node.js < 18 and
+    uses `@digitalbazaar/http-client@4` and `canonicalize@2`.
+  - Use `@digitalbazaar/http-client@4`. Requires Node.js 18+.
+  - Use `@digitalbazaar/vc@6.0.2`. Removes ODRL and VC examples contexts and
+    fixes bug with option overrides for verifying presentations.
+  - Use `did-veres-one@16`. Updated dependencies use the newer default safe
+    mode of jsonld.
+- Update peer deps:
+  - Use `@bedrock/web@4.0`. Drops support for Node.js < 18.
+  - Use `@bedrock/web-account@6.0`. Drops support for Node.js < 18 and uses
+    `@digitalbazaar/http-client@4`.
+  - Use `@bedrock/web-pouch-edv@8.0`. Drops support for Node.js < 18 and uses
+    `@digitalbazaar/edv-client@16.0`
+  - Use `@bedrock/web-profile-manager@20.0`. Drops support for Node.js < 18 and
+    uses deps that requires Node.js 18+.
+  - Use `@bedrock/web-session@6.0`. Drops support for Node.js < 18 and uses
+    `@digitalbazaar/http-client@4.0`.
+  - Use `@bedrock/web-vc-store@8.0.1`. Use `exports` instead of `module` and
+    Requires Web Crypto API exists for testing.
+
 ## 11.4.1 - 2023-08-31
 
 ### Fixed
