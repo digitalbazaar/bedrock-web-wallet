@@ -45,14 +45,14 @@
   },
   "peerDependencies": {
     "@bedrock/web": "^3.0.0",
-    "@bedrock/web-account": "^5.0.0",
-    "@bedrock/web-pouch-edv": "^7.0.0",
-    "@bedrock/web-profile-manager": "^19.0.0",
-    "@bedrock/web-session": "^5.0.0",
-    "@bedrock/web-vc-store": "^8.0.0"
+    "@bedrock/web-account": "^6.0.0",
+    "@bedrock/web-pouch-edv": "^8.0.0",
+    "@bedrock/web-profile-manager": "digitalbazaar/bedrock-web-profile-manager#update-deps",
+    "@bedrock/web-session": "^6.0.0",
+    "@bedrock/web-vc-store": "^8.0.1"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
