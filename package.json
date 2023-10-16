@@ -49,7 +49,7 @@
     "@bedrock/web-pouch-edv": "^8.0.0",
     "@bedrock/web-profile-manager": "digitalbazaar/bedrock-web-profile-manager#update-deps",
     "@bedrock/web-session": "^6.0.0",
-    "@bedrock/web-vc-store": "^8.0.1"
+    "@bedrock/web-vc-store": "digitalbazaar/bedrock-web-vc-store#add-engines"
   },
   "engines": {
     "node": ">=18"
