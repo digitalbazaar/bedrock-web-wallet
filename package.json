@@ -44,7 +44,7 @@
     "jsdoc-to-markdown": "^8.0.0"
   },
   "peerDependencies": {
-    "@bedrock/web": "^3.0.0",
+    "@bedrock/web": "digitalbazaar/bedrock-web#update-deps",
     "@bedrock/web-account": "^6.0.0",
     "@bedrock/web-pouch-edv": "^8.0.0",
     "@bedrock/web-profile-manager": "digitalbazaar/bedrock-web-profile-manager#update-deps",
