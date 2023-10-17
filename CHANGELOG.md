@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 12.0.1 - 2023-10-TBD
+
+### Fixed
+- Revert peer deps:
+  - `@bedrock/web@4.0` to v3.0.
+  - `@bedrock/web-vc-store@9.0` to v8.0.1.
+
 ## 12.0.0 - 2023-10-16
 
 ### Changed
@@ -22,7 +29,7 @@
     uses deps that requires Node.js 18+.
   - Use `@bedrock/web-session@6.0`. Drops support for Node.js < 18 and uses
     `@digitalbazaar/http-client@4.0`.
-  - Use `@bedrock/web-vc-store@8.0.1`. Use `exports` instead of `module` and
+  - Use `@bedrock/web-vc-store@9.0.0`. Use `exports` instead of `module` and
     Requires Web Crypto API exists for testing. Drops support for Node.js < 18.
 
 ## 11.4.1 - 2023-08-31
