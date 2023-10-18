@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 12.0.1 - 2023-10-TBD
+## 12.0.1 - 2023-10-18
 
 ### Fixed
 - Revert peer deps:
