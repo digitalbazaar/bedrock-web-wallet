@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 12.1.0 - 2023-10-dd
+## 12.1.0 - 2023-10-25
 
 ### Added
 - Add basic OID4VP support. There are many differences in OID4VP
