@@ -1,5 +1,17 @@
 # bedrock-web-wallet ChangeLog
 
+## 12.1.0 - 2023-10-dd
+
+### Added
+- Add basic OID4VP support. There are many differences in OID4VP
+  implementations in the ecosystem today and OID4VP is still in
+  draft form. This implementation supports a profile of draft 20
+  that uses LDP / Data Integrity secured VCs through the use of
+  features from `@digitalbazaar/oid4-client@3.1` for converting
+  a subset of VPRs to authorization requests and vice versa.
+  This OID4VP implementation should be considered experimental
+  as the ecosystem matures and changes are made.
+
 ## 12.0.1 - 2023-10-18
 
 ### Fixed
