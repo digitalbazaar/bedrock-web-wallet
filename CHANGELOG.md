@@ -1,5 +1,15 @@
 # bedrock-web-wallet ChangeLog
 
+## 13.0.0 - 2023-11-dd
+
+### Added
+- **BREAKING**: A configurable proof allow list will now be used
+  to prune presentations during VC exchange to ensure that only
+  proofs on the allow list will be permitted in VCs in the
+  presentation. This feature helps prevent users from sharing
+  proof meta data that they haven't consented to sharing, such
+  as meta data that helps them perform selective disclosure.
+
 ## 12.1.0 - 2023-10-25
 
 ### Added
