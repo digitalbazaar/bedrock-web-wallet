@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 13.0.0 - 2023-11-dd
+## 13.0.0 - 2023-11-12
 
 ### Added
 - **BREAKING**: A configurable proof allow list will now be used
