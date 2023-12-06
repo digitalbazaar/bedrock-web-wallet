@@ -160,7 +160,6 @@ describe('presentations.sign()', function() {
     } catch(e) {
       err = e;
     }
-    console.log(err);
     should.not.exist(err);
     should.exist(signedPresentation);
     assertSignedPresentation({
