@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 13.1.0 - 2023-12-dd
+
+### Added
+- Add support for signing presentation using `eddsa-rdfc-2022`.
+
 ## 13.0.0 - 2023-11-12
 
 ### Added

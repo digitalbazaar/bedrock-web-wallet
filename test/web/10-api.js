@@ -144,6 +144,35 @@ describe('presentations.sign()', function() {
     });
   });
   it('should successfully sign a presentation with "acceptedProofTypes" ' +
+    '"eddsa-rdfc-2022".', async () => {
+    // create unsigned presentation
+    const presentationId = `urn:uuid:${uuid()}`;
+    const unsignedPresentation = createUnsignedPresentation({
+      profileId, verifiableCredential, presentationId
+    });
+    let signedPresentation;
+    let err;
+    try {
+      signedPresentation = await webWallet.presentations.sign({
+        challenge, domain, profileId, presentation: unsignedPresentation,
+        acceptedProofTypes: [{name: 'eddsa-rdfc-2022'}]
+      });
+    } catch(e) {
+      err = e;
+    }
+    console.log(err);
+    should.not.exist(err);
+    should.exist(signedPresentation);
+    assertSignedPresentation({
+      signedPresentation,
+      credential: verifiableCredential,
+      presentationId,
+      profileId,
+      expectedProofType: 'DataIntegrityProof',
+      expectedCryptosuite: 'eddsa-rdfc-2022'
+    });
+  });
+  it('should successfully sign a presentation with "acceptedProofTypes" ' +
     '"Ed25519Signature2020".', async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
