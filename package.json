@@ -31,6 +31,7 @@
     "ajv": "^8.11.0",
     "did-veres-one": "^16.0.0",
     "ed25519-signature-2018-context": "^1.1.0",
+    "json-pointer": "^0.6.2",
     "jsonld-signatures": "^11.0.0",
     "p-all": "^4.0.0",
     "p-map": "^5.5.0",
