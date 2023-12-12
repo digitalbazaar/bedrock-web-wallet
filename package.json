@@ -13,6 +13,7 @@
   "dependencies": {
     "@digitalbazaar/age-verification-context": "^2.0.0",
     "@digitalbazaar/data-integrity": "^2.0.0",
+    "@digitalbazaar/ecdsa-sd-2023-cryptosuite": "^3.1.0",
     "@digitalbazaar/ed25519-signature-2018": "^4.0.0",
     "@digitalbazaar/ed25519-signature-2020": "^5.0.0",
     "@digitalbazaar/ed25519-verification-key-2018": "^4.0.0",
@@ -24,7 +25,7 @@
     "@digitalbazaar/lru-memoize": "^3.0.0",
     "@digitalbazaar/oid4-client": "^3.1.0",
     "@digitalbazaar/security-document-loader": "^2.0.0",
-    "@digitalbazaar/vc": "^6.0.2",
+    "@digitalbazaar/vc": "^6.2.0",
     "@digitalbazaar/vpqr": "^3.0.0",
     "@digitalbazaar/webkms-context": "^2.1.0",
     "@digitalbazaar/zcap": "^9.0.0",
