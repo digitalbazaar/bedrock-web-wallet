@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 13.2.0 - 2023-12-dd
+## 13.2.0 - 2023-12-14
 
 ### Added
 - Add `presentations.match()` API for matching a VPR against
