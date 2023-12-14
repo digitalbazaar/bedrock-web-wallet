@@ -1,5 +1,14 @@
 # bedrock-web-wallet ChangeLog
 
+## 13.2.0 - 2023-12-dd
+
+### Added
+- Add `presentations.match()` API for matching a VPR against
+  a credential store.
+- Enable derivation of SD credentials using `ecdsa-sd-2023` when
+  a VPR `QueryByExample` `credentialQuery` indicates it is an
+  accepted cryptosuite and a match VC has an `ecdsa-sd-2023` proof.
+
 ## 13.1.0 - 2023-12-06
 
 ### Added
