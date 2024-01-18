@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 13.3.0 - 2024-01-dd
+## 13.3.0 - 2024-01-17
 
 ### Added
 - Add feature to generate `bbs-sd-2023` derived proofs.
