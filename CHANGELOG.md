@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 13.4.0 - 2024-01-dd
+## 13.4.0 - 2024-01-19
 
 ### Changed
 - Prefer using `bbs` over `ecdsa-sd` for unlinkability advantages.
