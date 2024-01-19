@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 13.4.1 - 2024-01-dd
+
+### Changed
+- Fix initial cryptosuite preference to be based on query's
+  `acceptedCryptosuite` order.
+
 ## 13.4.0 - 2024-01-19
 
 ### Changed
