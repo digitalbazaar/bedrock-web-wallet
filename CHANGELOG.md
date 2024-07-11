@@ -6,6 +6,9 @@
 - Add ability to perform OID4VP when a presentation is required during
   OID4VCI.
 
+### Fixed
+- Fix context imports.
+
 ## 13.4.1 - 2024-01-19
 
 ### Changed
