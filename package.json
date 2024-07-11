@@ -28,7 +28,6 @@
     "@digitalbazaar/security-document-loader": "^2.0.0",
     "@digitalbazaar/vc": "^6.2.0",
     "@digitalbazaar/vpqr": "^3.0.0",
-    "@digitalbazaar/webkms-context": "^2.1.0",
     "@digitalbazaar/zcap": "^9.0.0",
     "ajv": "^8.11.0",
     "did-veres-one": "^16.0.0",
