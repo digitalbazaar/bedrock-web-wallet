@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 13.5.0 - 2024-dd-mm
+## 13.5.0 - 2024-07-11
 
 ### Added
 - Add ability to perform OID4VP when a presentation is required during
