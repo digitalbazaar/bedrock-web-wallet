@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 13.6.0 - 2024-08-dd
+
+### Added
+- Allow use of VC 2.0 verifiable presentations in exchanges.
+
 ## 13.5.0 - 2024-07-11
 
 ### Added
