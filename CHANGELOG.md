@@ -1,5 +1,22 @@
 # bedrock-web-wallet ChangeLog
 
+## 14.0.0 - 2024-08-xx
+
+### Changed
+- **BREAKING**: Update peer dependencies.
+  - `@bedrock/web@3.1.0`.
+  - `@bedrock/web-account@6.1.0`.
+  - `@bedrock/web-pouch-edv@8.1.0`.
+  - `@bedrock/web-profile-manager@21` (major version update).
+- **BREAKING**: Update dependencies.
+  - `@digitalbazaar/security-document-loader@3`.
+    - Adds VC 2.0 support.
+  - `@digitalbazaar/vc@7`.
+    - Adds VC 2.0 support.
+  - `@digitalbazaar/vpqr@4.1.0`
+    - Updates `cborld` compression codecs.
+- Update minor, test, dev, and other dependencies.
+
 ## 13.6.0 - 2024-08-05
 
 ### Added
