@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.0.0 - 2024-08-xx
+## 14.0.0 - 2024-08-06
 
 ### Changed
 - **BREAKING**: Update peer dependencies.
