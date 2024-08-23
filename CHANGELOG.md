@@ -4,6 +4,7 @@
 
 ### Changed
 - Use `@digitalbazaar/oid4-client@3.7.0`.
+- Use `getCredentialOffer()` to obtain OID4VCI credential offer.
 
 ## 14.0.0 - 2024-08-06
 
