@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.1.0 - 2024-08-xx
+## 14.1.0 - 2024-08-23
 
 ### Changed
 - Use `@digitalbazaar/oid4-client@3.7.0`.
