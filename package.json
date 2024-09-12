@@ -30,6 +30,8 @@
     "@digitalbazaar/vpqr": "^4.1.0",
     "@digitalbazaar/zcap": "^9.0.1",
     "ajv": "^8.17.1",
+    "base58-universal": "^2.0.0",
+    "base64url-universal": "^2.0.0",
     "did-veres-one": "^16.0.1",
     "ed25519-signature-2018-context": "^1.1.0",
     "json-pointer": "^0.6.2",
