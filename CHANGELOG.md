@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.1.1 - 2024-09-dd
+## 14.1.1 - 2024-09-15
 
 ### Fixed
 - Fix return value from `presentations.match()`, ensuring its
