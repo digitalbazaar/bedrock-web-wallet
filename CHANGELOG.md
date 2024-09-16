@@ -1,6 +1,9 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.2.0 - 2024-09-dd
+## 14.2.0 - 2024-09-16
+
+### Changed
+- Update dependencies.
 
 ### Fixed
 - Use non-obsolete bbs-2023 cryptosuite.
