@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 14.3.0 - 2024-09-xx
+
+### Added
+- Add support for NFC render method transmission.
+
 ## 14.2.0 - 2024-09-16
 
 ### Changed
