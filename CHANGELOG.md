@@ -3,7 +3,9 @@
 ## 14.4.0 - 2024-09-20
 
 ### Changed
-- Use `@digitalbazaar/oid4-client@4` to get latest updates.
+- Use `@digitalbazaar/oid4-client@4` to get latest updates including
+  support for processing `allOf` JSON schema usage in OID4VP authorization
+  requests.
 
 ## 14.3.0 - 2024-09-18
 
