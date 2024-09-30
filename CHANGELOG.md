@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 14.5.0 - 2024-09-dd
+
+### Changed
+- Ensure VCDM mandatory fields of `issuer` and `issuanceDate` (for VC 1.x)
+  are always included in selective-disclosure derived VCs.
+
 ## 14.4.0 - 2024-09-20
 
 ### Changed
