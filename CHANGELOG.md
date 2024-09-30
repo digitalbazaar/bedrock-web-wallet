@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.5.0 - 2024-09-dd
+## 14.5.0 - 2024-09-30
 
 ### Changed
 - Ensure VCDM mandatory fields of `issuer` and `issuanceDate` (for VC 1.x)
