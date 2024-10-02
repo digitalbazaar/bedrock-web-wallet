@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.6.1 - 2024-10-dd
+## 14.6.1 - 2024-10-02
 
 ### Fixed
 - Ensure VC 2.0 context is used when returning 2.0 VCs from OID4VCI.
