@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.6.2 - 2024-10-dd
+## 14.6.2 - 2024-10-28
 
 ### Fixed
 - Filter VPR query matches by JSON-LD context, if one was provided
