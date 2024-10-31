@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.6.3 - 2024-10-dd
+## 14.6.3 - 2024-10-31
 
 ### Fixed
 - Ensure data integrity contexts are loaded from local static copies.
