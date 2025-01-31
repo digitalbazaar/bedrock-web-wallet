@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 14.6.4 - 2025-mm-dd
+
+### Fixed
+- Removed debug log.
+
 ## 14.6.3 - 2024-10-31
 
 ### Fixed
