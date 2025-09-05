@@ -117,5 +117,41 @@ describe('queryByExample', function() {
       matches[0].credentialSubject.degree.name
         .should.equal('Bachelor of Science');
     });
+
+    it('should verify batch processing integration', async function() {
+      // Test module can handle the mock data structure used in presentations.js
+      const mockMatches = [
+        {
+          record: {
+            content: {
+              type: ['VerifiableCredential', 'UniversityDegreeCredential'],
+              credentialSubject: {degree: {type: 'BachelorDegree'}}
+            }
+          }
+        },
+        {
+          record: {
+            content: {
+              type: ['VerifiableCredential', 'DriverLicense'],
+              credentialSubject: {name: 'Test'}
+            }
+          }
+        }
+      ];
+
+      // Simulate what presentations.js does
+      const allContents = mockMatches.map(match => match.record.content);
+      const credentialQuery = {
+        example: {
+          type: 'UniversityDegreeCredential'
+        }
+      };
+
+      const matchingContents = matchCredentials(allContents, credentialQuery);
+
+      // Should find 1 matching credential
+      matchingContents.should.have.length(1);
+      matchingContents[0].type.should.include('UniversityDegreeCredential');
+    });
   });
 });
