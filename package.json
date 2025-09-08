@@ -37,6 +37,7 @@
     "ed25519-signature-2018-context": "^1.1.0",
     "json-pointer": "^0.6.2",
     "jsonld-signatures": "^11.3.0",
+    "klona": "^2.0.6",
     "p-all": "^5.0.0",
     "p-map": "^7.0.2",
     "uuid": "^10.0.0"
