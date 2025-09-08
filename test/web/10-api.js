@@ -301,85 +301,86 @@ describe('presentations.sign()', function() {
 });
 
 describe('presentations.match()', function() {
-  it('should match credentials using Query By Example with batch processing',
-    async () => {
+  it('should match credentials using Query By Example with batch ' +
+    'processing',
+  async () => {
 
-      // Create a mock credential store with test credentials
-      const mockCredentialStore = {
-        local: {
-          // Empty local store for simplicity
-          find: async () => ({documents: []})
-        },
-        remote: {
-          find: async () => {
-            // Return mock credentials that match our test
-            const mockCredentials = [
-              {
-                content: {
-                  '@context': ['https://www.w3.org/2018/credentials/v1'],
-                  type: ['VerifiableCredential', 'UniversityDegreeCredential'],
-                  credentialSubject: {
-                    id: 'did:example:test1',
-                    name: 'Alice',
-                    degree: {
-                      type: 'BachelorDegree',
-                      name: 'Bachelor of Computer Science'
-                    }
+    // Create a mock credential store with test credentials
+    const mockCredentialStore = {
+      local: {
+        // Empty local store for simplicity
+        find: async () => ({documents: []})
+      },
+      remote: {
+        find: async () => {
+          // Return mock credentials that match our test
+          const mockCredentials = [
+            {
+              content: {
+                '@context': ['https://www.w3.org/2018/credentials/v1'],
+                type: ['VerifiableCredential', 'UniversityDegreeCredential'],
+                credentialSubject: {
+                  id: 'did:example:test1',
+                  name: 'Alice',
+                  degree: {
+                    type: 'BachelorDegree',
+                    name: 'Bachelor of Computer Science'
                   }
-                },
-                meta: {id: 'credential-1'}
-              },
-              {
-                content: {
-                  '@context': ['https://www.w3.org/2018/credentials/v1'],
-                  type: ['VerifiableCredential', 'DriverLicense'],
-                  credentialSubject: {
-                    id: 'did:example:test2',
-                    name: 'Bob'
-                  }
-                },
-                meta: {id: 'credential-2'}
-              }
-            ];
-
-            // Simple mock: return all credentials,
-            // let presentations.js do the filtering
-            return {documents: mockCredentials};
-          },
-          convertVPRQuery: async () => {
-            // Mock conversion - return a simple query
-            return {queries: [{}]};
-          }
-        }
-      };
-
-      // Create VPR that should match only the university degree credential
-      const verifiablePresentationRequest = {
-        query: {
-          type: 'QueryByExample',
-          credentialQuery: {
-            example: {
-              type: 'UniversityDegreeCredential',
-              credentialSubject: {
-                degree: {
-                  type: 'BachelorDegree'
                 }
+              },
+              meta: {id: 'credential-1'}
+            },
+            {
+              content: {
+                '@context': ['https://www.w3.org/2018/credentials/v1'],
+                type: ['VerifiableCredential', 'DriverLicense'],
+                credentialSubject: {
+                  id: 'did:example:test2',
+                  name: 'Bob'
+                }
+              },
+              meta: {id: 'credential-2'}
+            }
+          ];
+
+          // Simple mock: return all credentials,
+          // let presentations.js do the filtering
+          return {documents: mockCredentials};
+        },
+        convertVPRQuery: async () => {
+          // Mock conversion - return a simple query
+          return {queries: [{}]};
+        }
+      }
+    };
+
+    // Create VPR that should match only the university degree credential
+    const verifiablePresentationRequest = {
+      query: {
+        type: 'QueryByExample',
+        credentialQuery: {
+          example: {
+            type: 'UniversityDegreeCredential',
+            credentialSubject: {
+              degree: {
+                type: 'BachelorDegree'
               }
             }
           }
         }
-      };
+      }
+    };
 
-      // Call presentations.match() - this should trigger your batch processing!
-      const {flat: matches} = await webWallet.presentations.match({
-        verifiablePresentationRequest,
-        credentialStore: mockCredentialStore
-      });
-
-      // Verify results
-      matches.should.have.length(1);
-      matches[0].record.content.credentialSubject.name.should.equal('Alice');
-      matches[0].record.content.type
-        .should.include('UniversityDegreeCredential');
+    // Call presentations.match() - this should trigger your batch processing!
+    const {flat: matches} = await webWallet.presentations.match({
+      verifiablePresentationRequest,
+      credentialStore: mockCredentialStore
     });
+
+    // Verify results
+    matches.should.have.length(1);
+    matches[0].record.content.credentialSubject.name.should.equal('Alice');
+    matches[0].record.content.type
+      .should.include('UniversityDegreeCredential');
+  });
 });
