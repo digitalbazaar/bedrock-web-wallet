@@ -63,20 +63,7 @@ describe('NFC Renderer', function() {
       }
     );
 
-    it('should work with legacy NfcRenderingTemplate2024 using payload field',
-      async () => {
-        const credential = {
-          renderMethod: {
-            type: 'NfcRenderingTemplate2024',
-            // Using 'payload', not 'template'
-            payload: 'z2drAj5bAkJFsTPKmBvG3Z'
-          }
-        };
-        const result = await webWallet.nfcRenderer.renderToNfc({credential});
-        should.exist(result.bytes);
-      }
-    );
-
+    // Check one more time - return false and not work with template field
     it('should return true for legacy NfcRenderingTemplate2024 type',
       async () => {
         const credential = {
@@ -84,7 +71,7 @@ describe('NFC Renderer', function() {
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'NfcRenderingTemplate2024',
-            template: 'z6Mkf5rGMoatrSj1f4CyvuHBeXJELe9RPdzo2rJQ'
+            payload: 'z6Mkf5rGMoatrSj1f4CyvuHBeXJELe9RPdzo2rJQ'
           }
         };
 
@@ -182,7 +169,7 @@ describe('NFC Renderer', function() {
       }
     );
 
-    it('should successfully render static NFC with base64url-encoded payload',
+    it('should successfully render static NFC with base64url-encoded template',
       async () => {
         // Base64URL encoded "Test Data"
         const credential = {
@@ -191,7 +178,7 @@ describe('NFC Renderer', function() {
           renderMethod: {
             type: 'TemplateRenderMethod',
             renderSuite: 'nfc-static',
-            payload: 'uVGVzdCBEYXRh'
+            template: 'uVGVzdCBEYXRh'
           }
         };
 
@@ -240,8 +227,8 @@ describe('NFC Renderer', function() {
         decoded.should.equal('NFC Data');
       }
     );
-
-    it('should use template field when both template and payload exist',
+    // Check one more time - as template and payload should never exist.
+    it('should fail when TemplateRenderMethod has both template and payload',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
@@ -264,46 +251,23 @@ describe('NFC Renderer', function() {
           err = e;
         }
 
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain(
+          'TemplateRenderMethod requires "template" and should not have both');
       }
     );
 
-    it('should work with legacy NfcRenderingTemplate2024 type',
+    // template field instead of payload
+    it('should fail when NfcRenderingTemplate2024 uses template field',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'NfcRenderingTemplate2024',
+            // wrong field - it should be payload
             template: 'z2drAj5bAkJFsTPKmBvG3Z'
-          }
-        };
-
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
-
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
-      }
-    );
-
-    it('should fail when static payload is missing',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static'
-            // No template or payload field
           }
         };
 
@@ -317,7 +281,34 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain('template or payload');
+        err.message.should.contain(
+          'NfcRenderingTemplate2024 requires "payload"');
+      }
+    );
+    // Check one more time - no template field
+    it('should fail TemplateRenderMethod has no template field',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc-static'
+            // No template field
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('TemplateRenderMethod requires "template"');
       }
     );
 
@@ -344,6 +335,34 @@ describe('NFC Renderer', function() {
         should.exist(err);
         should.not.exist(result);
         err.message.should.contain('encoding format');
+      }
+    );
+
+    it('should work with legacy NfcRenderingTemplate2024 using payload field',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'NfcRenderingTemplate2024',
+            // Using 'payload', not 'template'
+            payload: 'z2drAj5bAkJFsTPKmBvG3Z'
+          }
+        };
+
+        let result;
+        let err;
+
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(error) {
+          err = error;
+        }
+
+        should.not.exist(err);
+        should.exist(result);
+        should.exist(result.bytes);
+        result.bytes.should.be.an.instanceof(Uint8Array);
       }
     );
   });
@@ -711,7 +730,7 @@ describe('NFC Renderer', function() {
       }
     );
 
-    it('should fail when neither payload nor renderProperty exist',
+    it('should fail when neither template nor renderProperty exist',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
