@@ -5,14 +5,14 @@ import * as webWallet from '@bedrock/web-wallet';
 describe('NFC Renderer', function() {
   describe('supportsNFC()', function() {
     // Test to verify if a credential supports NFC rendering.
-    it('should return true for credential with nfc-static renderSuite',
+    it('should return true for credential with nfc renderSuite and template',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            renderSuite: 'nfc',
             template: 'z6Mkf5rGMoatrSj1f4CyvuHBeXJELe9RPdzo2rJQ'
           }
         };
@@ -23,26 +23,30 @@ describe('NFC Renderer', function() {
       }
     );
 
-    it('should return true for credential with nfc-dynamic renderSuite',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123',
-            name: 'John Doe'
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/name']
-          }
-        };
+    it('should return true even when template is missing ' +
+      '(detection, not validation',
+    async () => {
+      // Note: supportsNFC() only detects NFC capability, it doesn't validate.
+      // This credential will fail in renderToNfc() due to missing template.
+      const credential = {
+        '@context': ['https://www.w3.org/ns/credentials/v2'],
+        type: ['VerifiableCredential'],
+        credentialSubject: {
+          id: 'did:example:123',
+          name: 'John Doe'
+        },
+        renderMethod: {
+          type: 'TemplateRenderMethod',
+          renderSuite: 'nfc',
+          renderProperty: ['/credentialSubject/name']
+          // missing template - will fail in renderToNfc()
+        }
+      };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
-        should.exist(result);
-        result.should.equal(true);
-      }
+      const result = webWallet.nfcRenderer.supportsNFC({credential});
+      should.exist(result);
+      result.should.equal(true);
+    }
     );
 
     it('should return true for credential with generic nfc renderSuite',
@@ -63,7 +67,7 @@ describe('NFC Renderer', function() {
       }
     );
 
-    // Check one more time - return false and not work with template field
+    // Legacy format uses 'payload' field instead of 'template'
     it('should return true for legacy NfcRenderingTemplate2024 type',
       async () => {
         const credential = {
@@ -93,7 +97,7 @@ describe('NFC Renderer', function() {
             },
             {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-static',
+              renderSuite: 'nfc',
               template: 'z6Mkf5rGMoatrSj1f4CyvuHBeXJELe9RPdzo2rJQ'
             }
           ]
@@ -137,18 +141,37 @@ describe('NFC Renderer', function() {
         result.should.equal(false);
       }
     );
-  });
 
-  describe('renderToNfc() - Static Rendering', function() {
-    it('should successfully render static NFC with multibase-encoded template',
+    it('should detect NFC renderSuite case-insensitively',
       async () => {
-        // Base58 encoded "Hello NFC"
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            // uppercase
+            renderSuite: 'NFC',
+            template: 'z6Mkf5rGMoatrSj1f4CyvuHBeXJELe9RPdzo2rJQ'
+          }
+        };
+
+        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        should.exist(result);
+        result.should.equal(true);
+      }
+    );
+  });
+
+  describe('renderToNfc() - Template Decoding', function() {
+    it('should successfully render static NFC with multibase-encoded template',
+      async () => {
+        // Base58 multibase encoded "Hello NFC" (z = base58btc prefix)
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
             template: 'z2drAj5bAkJFsTPKmBvG3Z'
           }
         };
@@ -177,7 +200,7 @@ describe('NFC Renderer', function() {
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            renderSuite: 'nfc',
             template: 'uVGVzdCBEYXRh'
           }
         };
@@ -199,13 +222,13 @@ describe('NFC Renderer', function() {
 
     it('should successfully render static NFC with data URI format',
       async () => {
-        // Base64 encoded "NFC Data"
+        // Data URI with base64 encoded "NFC Data"
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            renderSuite: 'nfc',
             template: 'data:application/octet-stream;base64,TkZDIERhdGE='
           }
         };
@@ -227,7 +250,8 @@ describe('NFC Renderer', function() {
         decoded.should.equal('NFC Data');
       }
     );
-    // Check one more time - as template and payload should never exist.
+
+    // Field validation: TemplateRenderMethod uses 'template', not 'payload'
     it('should fail when TemplateRenderMethod has both template and payload',
       async () => {
         const credential = {
@@ -235,7 +259,7 @@ describe('NFC Renderer', function() {
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            renderSuite: 'nfc',
             // "Hello NFC"
             template: 'z2drAj5bAkJFsTPKmBvG3Z',
             // "Different"
@@ -253,12 +277,11 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain(
-          'TemplateRenderMethod requires "template" and should not have both');
+        err.message.should.contain('template');
       }
     );
 
-    // template field instead of payload
+    // Field validation: NfcRenderingTemplate2024 uses 'payload', not 'template'
     it('should fail when NfcRenderingTemplate2024 uses template field',
       async () => {
         const credential = {
@@ -281,11 +304,11 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain(
-          'NfcRenderingTemplate2024 requires "payload"');
+        err.message.should.contain('payload');
       }
     );
-    // Check one more time - no template field
+
+    // Template is required for all NFC rendering
     it('should fail TemplateRenderMethod has no template field',
       async () => {
         const credential = {
@@ -293,7 +316,7 @@ describe('NFC Renderer', function() {
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static'
+            renderSuite: 'nfc'
             // No template field
           }
         };
@@ -308,18 +331,18 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain('TemplateRenderMethod requires "template"');
+        err.message.should.contain('template');
       }
     );
 
-    it('should fail when payload encoding is invalid',
+    it('should fail when template encoding is invalid',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-static',
+            renderSuite: 'nfc',
             template: 'xInvalidEncoding123'
           }
         };
@@ -365,22 +388,24 @@ describe('NFC Renderer', function() {
         result.bytes.should.be.an.instanceof(Uint8Array);
       }
     );
-  });
 
-  describe('renderToNfc() - Dynamic Rendering', function() {
-    it('should successfully render dynamic NFC with single renderProperty',
+    it('should decode template even when renderProperty is present',
       async () => {
+        // Template contains "Hello NFC"
+        // renderProperty indicates what fields are disclosed (for transparency)
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           credentialSubject: {
-            id: 'did:example:123',
-            name: 'Alice Smith'
+            greeting: 'Hello'
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/name']
+            renderSuite: 'nfc',
+            // "Hello NFC" as base64 in data URI format
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
+            // For transparency
+            renderProperty: ['/credentialSubject/greeting']
           }
         };
 
@@ -395,29 +420,97 @@ describe('NFC Renderer', function() {
         should.not.exist(err);
         should.exist(result);
         should.exist(result.bytes);
-        result.bytes.should.be.an.instanceof(Uint8Array);
-        // Verify content
+
+        // Should decode template, renderProperty is for transparency only
         const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('Alice Smith');
+        decoded.should.equal('Hello NFC');
       }
     );
 
-    it('should successfully render dynamic NFC with multiple renderProperty',
+    it('should fail when renderProperty references non-existent field',
       async () => {
+        // Template is valid, but renderProperty validation fails
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          credentialSubject: {
+            name: 'Alice'
+          },
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            template: 'z2drAj5bAkJFsTPKmBvG3Z',
+            // Doesn't exist!
+            renderProperty: ['/credentialSubject/nonExistent']
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('Property not found');
+      }
+    );
+  });
+
+  describe('renderToNfc() - renderProperty Validation', function() {
+    it('should fail when only renderProperty exists without template',
+      async () => {
+        // In unified architecture, template is always required
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           credentialSubject: {
             id: 'did:example:123',
-            firstName: 'Alice',
-            lastName: 'Smith'
+            name: 'Alice Smith'
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
+            renderSuite: 'nfc',
+            renderProperty: ['/credentialSubject/name']
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('template');
+      }
+    );
+
+    it('should validate renderProperty field exists before decoding template',
+      async () => {
+        // renderProperty validates credential has the field
+        // Then template is decoded (not the credential field!)
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          credentialSubject: {
+            id: 'did:example:123',
+            name: 'Alice Smith'
+          },
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // "Hello NFC" encoded
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
+            // Validates field exists
             renderProperty: [
-              '/credentialSubject/firstName',
-              '/credentialSubject/lastName'
+              '/credentialSubject/name',
             ]
           }
         };
@@ -433,149 +526,155 @@ describe('NFC Renderer', function() {
         should.not.exist(err);
         should.exist(result);
         should.exist(result.bytes);
-        // Verify content (concatenated)
+        // Should decode template, NOT extract "Alice Smith"
         const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('AliceSmith');
+        decoded.should.equal('Hello NFC');
+        decoded.should.not.equal('Alice Smith');
       }
     );
 
-    it('should handle numeric values in dynamic rendering',
+    // TODO: Delete later
+    // it('should handle numeric values in dynamic rendering',
+    //   async () => {
+    //     const credential = {
+    //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+    //       type: ['VerifiableCredential'],
+    //       credentialSubject: {
+    //         id: 'did:example:123',
+    //         age: 25
+    //       },
+    //       renderMethod: {
+    //         type: 'TemplateRenderMethod',
+    //         renderSuite: 'nfc-dynamic',
+    //         renderProperty: ['/credentialSubject/age']
+    //       }
+    //     };
+
+    //     let result;
+    //     let err;
+    //     try {
+    //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+    //     } catch(e) {
+    //       err = e;
+    //     }
+
+    //     should.not.exist(err);
+    //     should.exist(result);
+    //     should.exist(result.bytes);
+    //     const decoded = new TextDecoder().decode(result.bytes);
+    //     decoded.should.equal('25');
+
+    //   }
+    // );
+
+    // TODO: Delete later
+    // it('should handle object values in dynamic rendering',
+    //   async () => {
+    //     const credential = {
+    //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+    //       type: ['VerifiableCredential'],
+    //       credentialSubject: {
+    //         id: 'did:example:123',
+    //         address: {
+    //           street: '123 Main St',
+    //           city: 'Boston'
+    //         }
+    //       },
+    //       renderMethod: {
+    //         type: 'TemplateRenderMethod',
+    //         renderSuite: 'nfc-dynamic',
+    //         renderProperty: ['/credentialSubject/address']
+    //       }
+    //     };
+
+    //     let result;
+    //     let err;
+    //     try {
+    //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+    //     } catch(e) {
+    //       err = e;
+    //     }
+
+    //     should.not.exist(err);
+    //     should.exist(result);
+    //     should.exist(result.bytes);
+    //     // Should be JSON stringified
+    //     const decoded = new TextDecoder().decode(result.bytes);
+    //     const parsed = JSON.parse(decoded);
+    //     parsed.street.should.equal('123 Main St');
+    //     parsed.city.should.equal('Boston');
+    //   }
+    // );
+
+    // TODO: Delete later
+    // it('should handle array access in JSON pointer',
+    //   async () => {
+    //     const credential = {
+    //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+    //       type: ['VerifiableCredential'],
+    //       credentialSubject: {
+    //         id: 'did:example:123',
+    //         skills: ['JavaScript', 'Python', 'Rust']
+    //       },
+    //       renderMethod: {
+    //         type: 'TemplateRenderMethod',
+    //         renderSuite: 'nfc-dynamic',
+    //         renderProperty: ['/credentialSubject/skills/0']
+    //       }
+    //     };
+
+    //     let result;
+    //     let err;
+    //     try {
+    //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+    //     } catch(e) {
+    //       err = e;
+    //     }
+
+    //     should.not.exist(err);
+    //     should.exist(result);
+    //     should.exist(result.bytes);
+    //     const decoded = new TextDecoder().decode(result.bytes);
+    //     decoded.should.equal('JavaScript');
+    //   }
+    // );
+
+    // TODO: Delete later
+    // it('should handle special characters in JSON pointer',
+    //   async () => {
+    //     const credential = {
+    //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+    //       type: ['VerifiableCredential'],
+    //       credentialSubject: {
+    //         id: 'did:example:123',
+    //         'field/with~slash': 'test-value'
+    //       },
+    //       renderMethod: {
+    //         type: 'TemplateRenderMethod',
+    //         renderSuite: 'nfc-dynamic',
+    //         renderProperty: ['/credentialSubject/field~1with~0slash']
+    //       }
+    //     };
+
+    //     let result;
+    //     let err;
+    //     try {
+    //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+    //     } catch(e) {
+    //       err = e;
+    //     }
+
+    //     should.not.exist(err);
+    //     should.exist(result);
+    //     should.exist(result.bytes);
+    //     const decoded = new TextDecoder().decode(result.bytes);
+    //     decoded.should.equal('test-value');
+    //   }
+    // );
+
+    it('should succeed when renderProperty is missing but template exists',
       async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123',
-            age: 25
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/age']
-          }
-        };
-
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
-
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
-        const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('25');
-
-      }
-    );
-
-    it('should handle object values in dynamic rendering',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123',
-            address: {
-              street: '123 Main St',
-              city: 'Boston'
-            }
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/address']
-          }
-        };
-
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
-
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
-        // Should be JSON stringified
-        const decoded = new TextDecoder().decode(result.bytes);
-        const parsed = JSON.parse(decoded);
-        parsed.street.should.equal('123 Main St');
-        parsed.city.should.equal('Boston');
-      }
-    );
-
-    it('should handle array access in JSON pointer',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123',
-            skills: ['JavaScript', 'Python', 'Rust']
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/skills/0']
-          }
-        };
-
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
-
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
-        const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('JavaScript');
-      }
-    );
-
-    it('should handle special characters in JSON pointer',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123',
-            'field/with~slash': 'test-value'
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: ['/credentialSubject/field~1with~0slash']
-          }
-        };
-
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
-
-        should.not.exist(err);
-        should.exist(result);
-        should.exist(result.bytes);
-        const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('test-value');
-      }
-    );
-
-    it('should fail when renderProperty is missing',
-      async () => {
+        // renderProperty is optional - template is what matters
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
@@ -585,7 +684,9 @@ describe('NFC Renderer', function() {
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic'
+            renderSuite: 'nfc',
+            // "Hello NFC"
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD'
             // No renderProperty
           }
         };
@@ -598,14 +699,17 @@ describe('NFC Renderer', function() {
           err = e;
         }
 
-        should.exist(err);
-        should.not.exist(result);
-        err.message.should.contain('renderProperty');
+        should.not.exist(err);
+        should.exist(result);
+        should.exist(result.bytes);
+        const decoded = new TextDecoder().decode(result.bytes);
+        decoded.should.equal('Hello NFC');
       }
     );
 
-    it('should fail when renderProperty path does not exist',
+    it('should fail when renderProperty references non-existent field',
       async () => {
+        // Even though template is valid, renderProperty validation fails
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
@@ -615,7 +719,9 @@ describe('NFC Renderer', function() {
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
+            renderSuite: 'nfc',
+            // valid template
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
             renderProperty: ['/credentialSubject/nonExistentField']
           }
         };
@@ -634,18 +740,24 @@ describe('NFC Renderer', function() {
       }
     );
 
-    it('should fail when renderProperty is empty array',
+    it('should validate all renderProperty fields exist',
       async () => {
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           credentialSubject: {
-            id: 'did:example:123'
+            id: 'did:example:123',
+            firstName: 'Alice',
+            lastName: 'Smith'
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
-            renderSuite: 'nfc-dynamic',
-            renderProperty: []
+            renderSuite: 'nfc',
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
+            renderProperty: [
+              '/credentialSubject/firstName',
+              '/credentialSubject/lastName'
+            ]
           }
         };
 
@@ -657,61 +769,29 @@ describe('NFC Renderer', function() {
           err = e;
         }
 
-        should.exist(err);
-        should.not.exist(result);
-        err.message.should.contain('cannot be empty');
+        should.not.exist(err);
+        should.exist(result);
+        // Template is decoded, not the fields
+        const decoded = new TextDecoder().decode(result.bytes);
+        decoded.should.equal('Hello NFC');
       }
     );
-  });
 
-  describe('renderToNfc() - Generic NFC Suite', function() {
-    it('should prioritize static rendering when both payload and ' +
-      'renderProperty exist', async () => {
-      const credential = {
-        '@context': ['https://www.w3.org/ns/credentials/v2'],
-        type: ['VerifiableCredential'],
-        credentialSubject: {
-          id: 'did:example:123',
-          name: 'Alice'
-        },
-        renderMethod: {
-          type: 'TemplateRenderMethod',
-          renderSuite: 'nfc',
-          // "Hello NFC"
-          template: 'z2drAj5bAkJFsTPKmBvG3Z',
-          renderProperty: ['/credentialSubject/name']
-        }
-      };
-
-      let result;
-      let err;
-      try {
-        result = await webWallet.nfcRenderer.renderToNfc({credential});
-      } catch(e) {
-        err = e;
-      }
-
-      should.not.exist(err);
-      should.exist(result);
-      // Should use static rendering (template), not dynamic
-      const decoded = new TextDecoder().decode(result.bytes);
-      // If it was dynamic, it would be "Alice"
-      decoded.should.not.equal('Alice');
-    });
-
-    it('should fallback to dynamic rendering when only renderProperty exists',
+    it('should succeed when renderProperty is empty array',
       async () => {
+        // Empty renderProperty is treated as "no filtering"
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
           credentialSubject: {
-            id: 'did:example:123',
-            name: 'Bob'
+            id: 'did:example:123'
           },
           renderMethod: {
             type: 'TemplateRenderMethod',
             renderSuite: 'nfc',
-            renderProperty: ['/credentialSubject/name']
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
+            // Empty is OK
+            renderProperty: []
           }
         };
 
@@ -726,38 +806,137 @@ describe('NFC Renderer', function() {
         should.not.exist(err);
         should.exist(result);
         const decoded = new TextDecoder().decode(result.bytes);
-        decoded.should.equal('Bob');
+        decoded.should.equal('Hello NFC');
       }
     );
 
-    it('should fail when neither template nor renderProperty exist',
-      async () => {
-        const credential = {
-          '@context': ['https://www.w3.org/ns/credentials/v2'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            id: 'did:example:123'
-          },
-          renderMethod: {
-            type: 'TemplateRenderMethod',
-            renderSuite: 'nfc'
-          }
-        };
+    // TODO: Delete later
+    // it('should fail when renderProperty is empty array',
+    //   async () => {
+    //     const credential = {
+    //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+    //       type: ['VerifiableCredential'],
+    //       credentialSubject: {
+    //         id: 'did:example:123'
+    //       },
+    //       renderMethod: {
+    //         type: 'TemplateRenderMethod',
+    //         renderSuite: 'nfc-dynamic',
+    //         renderProperty: []
+    //       }
+    //     };
 
-        let result;
-        let err;
-        try {
-          result = await webWallet.nfcRenderer.renderToNfc({credential});
-        } catch(e) {
-          err = e;
-        }
+    //     let result;
+    //     let err;
+    //     try {
+    //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+    //     } catch(e) {
+    //       err = e;
+    //     }
 
-        should.exist(err);
-        should.not.exist(result);
-        err.message.should.contain('neither payload nor renderProperty');
-      }
-    );
+    //     should.exist(err);
+    //     should.not.exist(result);
+    //     err.message.should.contain('cannot be empty');
+    //   }
+    // );
   });
+
+  // TODO: Delete later
+  // describe('renderToNfc() - Generic NFC Suite', function() {
+  //   it('should prioritize static rendering when both payload and ' +
+  //     'renderProperty exist', async () => {
+  //     const credential = {
+  //       '@context': ['https://www.w3.org/ns/credentials/v2'],
+  //       type: ['VerifiableCredential'],
+  //       credentialSubject: {
+  //         id: 'did:example:123',
+  //         name: 'Alice'
+  //       },
+  //       renderMethod: {
+  //         type: 'TemplateRenderMethod',
+  //         renderSuite: 'nfc',
+  //         // "Hello NFC"
+  //         template: 'z2drAj5bAkJFsTPKmBvG3Z',
+  //         renderProperty: ['/credentialSubject/name']
+  //       }
+  //     };
+
+  //     let result;
+  //     let err;
+  //     try {
+  //       result = await webWallet.nfcRenderer.renderToNfc({credential});
+  //     } catch(e) {
+  //       err = e;
+  //     }
+
+  //     should.not.exist(err);
+  //     should.exist(result);
+  //     // Should use static rendering (template), not dynamic
+  //     const decoded = new TextDecoder().decode(result.bytes);
+  //     // If it was dynamic, it would be "Alice"
+  //     decoded.should.not.equal('Alice');
+  //   });
+
+  //   it('should fallback to dynamic rendering when' +
+  //    ' only renderProperty exists',
+  //     async () => {
+  //       const credential = {
+  //         '@context': ['https://www.w3.org/ns/credentials/v2'],
+  //         type: ['VerifiableCredential'],
+  //         credentialSubject: {
+  //           id: 'did:example:123',
+  //           name: 'Bob'
+  //         },
+  //         renderMethod: {
+  //           type: 'TemplateRenderMethod',
+  //           renderSuite: 'nfc',
+  //           renderProperty: ['/credentialSubject/name']
+  //         }
+  //       };
+
+  //       let result;
+  //       let err;
+  //       try {
+  //         result = await webWallet.nfcRenderer.renderToNfc({credential});
+  //       } catch(e) {
+  //         err = e;
+  //       }
+
+  //       should.not.exist(err);
+  //       should.exist(result);
+  //       const decoded = new TextDecoder().decode(result.bytes);
+  //       decoded.should.equal('Bob');
+  //     }
+  //   );
+
+  //   it('should fail when neither template nor renderProperty exist',
+  //     async () => {
+  //       const credential = {
+  //         '@context': ['https://www.w3.org/ns/credentials/v2'],
+  //         type: ['VerifiableCredential'],
+  //         credentialSubject: {
+  //           id: 'did:example:123'
+  //         },
+  //         renderMethod: {
+  //           type: 'TemplateRenderMethod',
+  //           renderSuite: 'nfc'
+  //         }
+  //       };
+
+  //       let result;
+  //       let err;
+  //       try {
+  //         result = await webWallet.nfcRenderer.renderToNfc({credential});
+  //       } catch(e) {
+  //         err = e;
+  //       }
+
+  //       should.exist(err);
+  //       should.not.exist(result);
+  //       err.message.should.contain('neither payload nor renderProperty');
+  //     }
+  //   );
+  // });
 
   describe('renderToNfc() - Error Cases', function() {
     it('should fail when credential has no renderMethod',
@@ -824,6 +1003,171 @@ describe('NFC Renderer', function() {
         should.not.exist(result);
       }
     );
+
+    it('should fail when data URI has wrong media type',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // Wrong media type - should be application/octet-stream
+            template: 'data:text/plain;base64,SGVsbG8='
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('media type');
+      }
+    );
+
+    it('should fail when data URI format is malformed',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // Malformed data URI (missing encoding or data)
+            template: 'data:application/octet-stream'
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('Invalid data URI');
+      }
+    );
+
+    it('should fail when multibase encoding is unsupported',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // 'f' is base16 multibase - not supported by implementation
+            template: 'f48656c6c6f'
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('encoding format');
+      }
+    );
+
+    it('should fail when data URI encoding is unsupported',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // hex encoding is not supported
+            template: 'data:application/octet-stream;hex,48656c6c6f'
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        err.message.should.contain('encoding');
+      }
+    );
+
+    it('should fail when base64 data is invalid',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // Invalid base64 characters
+            template: 'data:application/octet-stream;base64,!!!invalid!!!'
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+        // Error message varies by environment (browser vs Node)
+      }
+    );
+
+    it('should fail when template is not a string',
+      async () => {
+        const credential = {
+          '@context': ['https://www.w3.org/ns/credentials/v2'],
+          type: ['VerifiableCredential'],
+          renderMethod: {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'nfc',
+            // Template should be a string, not an object
+            template: {
+              type: 'embedded',
+              data: 'some-data'
+            }
+          }
+        };
+
+        let result;
+        let err;
+        try {
+          result = await webWallet.nfcRenderer.renderToNfc({credential});
+        } catch(e) {
+          err = e;
+        }
+
+        should.exist(err);
+        should.not.exist(result);
+      }
+    );
+
   });
 
   describe('NFC Renderer - EAD Credential Tests (from URL)', function() {
@@ -889,7 +1233,7 @@ describe('NFC Renderer', function() {
         }
       );
 
-      it('should return true when adding nfc-dynamic renderMethod',
+      it('should return true when adding nfc renderMethod with renderProperty',
         function() {
           if(!eadCredential) {
             this.skip();
@@ -899,8 +1243,9 @@ describe('NFC Renderer', function() {
             ...eadCredential,
             renderMethod: {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-dynamic',
+              renderSuite: 'nfc',
               renderProperty: ['/credentialSubject/givenName']
+              // Note: no template, but supportsNFC() only checks capability
             }
           };
 
@@ -913,7 +1258,7 @@ describe('NFC Renderer', function() {
         }
       );
 
-      it('should return true when adding nfc-static renderMethod',
+      it('should return true when adding nfc renderMethod with template',
         function() {
           if(!eadCredential) {
             this.skip();
@@ -923,8 +1268,8 @@ describe('NFC Renderer', function() {
             ...eadCredential,
             renderMethod: {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-static',
-              template: 'z2drAj5bAkJFsTPKmBvG3Z'
+              renderSuite: 'nfc',
+              template: 'data:application/octet-stream;base64,SGVsbG8gTkZD'
             }
           };
 
@@ -938,18 +1283,57 @@ describe('NFC Renderer', function() {
       );
     });
 
-    describe('renderToNfc() - EAD Single Field Extraction', function() {
-      it('should extract givenName from EAD credential',
+    describe('renderToNfc() - EAD Template Required Tests', function() {
+      it('should fail when extracting givenName without template',
         async function() {
           if(!eadCredential) {
             this.skip();
           }
 
+          // In unified architecture, template is required
           const credential = {
             ...eadCredential,
             renderMethod: {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-dynamic',
+              renderSuite: 'nfc',
+              renderProperty: ['/credentialSubject/givenName']
+              // No template - should fail!
+            }
+          };
+
+          let result;
+          let err;
+          try {
+            result = await webWallet.nfcRenderer.renderToNfc({credential});
+          } catch(e) {
+            err = e;
+          }
+
+          should.exist(err);
+          should.not.exist(result);
+          err.message.should.contain('template');
+
+        }
+      );
+
+      it('should succeed when template is provided with renderProperty',
+        async function() {
+          if(!eadCredential) {
+            this.skip();
+          }
+
+          // Encode "JOHN" as base58 multibase for template
+          // Using TextEncoder + base58 encoding
+          const johnBytes = new TextEncoder().encode('JOHN');
+          const base58 = await import('base58-universal');
+          const encodedJohn = 'z' + base58.encode(johnBytes);
+
+          const credential = {
+            ...eadCredential,
+            renderMethod: {
+              type: 'TemplateRenderMethod',
+              renderSuite: 'nfc',
+              template: encodedJohn,
               renderProperty: ['/credentialSubject/givenName']
             }
           };
@@ -970,7 +1354,7 @@ describe('NFC Renderer', function() {
         }
       );
 
-      it('should extract familyName from EAD credential',
+      it('should validate renderProperty fields exist in credential',
         async function() {
           if(!eadCredential) {
             this.skip();
@@ -980,28 +1364,8 @@ describe('NFC Renderer', function() {
             ...eadCredential,
             renderMethod: {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-dynamic',
-              renderProperty: ['/credentialSubject/familyName']
-            }
-          };
-
-          const result = await webWallet.nfcRenderer.renderToNfc({credential});
-          const decoded = new TextDecoder().decode(result.bytes);
-          decoded.should.equal('SMITH');
-        }
-      );
-
-      it('should extract full name (concatenated)',
-        async function() {
-          if(!eadCredential) {
-            this.skip();
-          }
-
-          const credential = {
-            ...eadCredential,
-            renderMethod: {
-              type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-dynamic',
+              renderSuite: 'nfc',
+              template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
               renderProperty: [
                 '/credentialSubject/givenName',
                 '/credentialSubject/additionalName',
@@ -1010,15 +1374,25 @@ describe('NFC Renderer', function() {
             }
           };
 
-          const result = await webWallet.nfcRenderer.renderToNfc({credential});
+          let result;
+          let err;
+          try {
+            result = await webWallet.nfcRenderer.renderToNfc({credential});
+          } catch(e) {
+            err = e;
+          }
+
+          should.not.exist(err);
+          should.exist(result);
+          // Template is decoded, not the credential fields
           const decoded = new TextDecoder().decode(result.bytes);
-          decoded.should.equal('JOHNJACOBSMITH');
+          decoded.should.equal('Hello NFC');
         }
       );
     });
 
-    describe('renderToNfc() - EAD Image Data', function() {
-      it('should extract large image data URI',
+    describe('renderToNfc() - EAD Template Size Tests', function() {
+      it('should fail when trying to extract image without template',
         async function() {
           if(!eadCredential) {
             this.skip();
@@ -1028,7 +1402,48 @@ describe('NFC Renderer', function() {
             ...eadCredential,
             renderMethod: {
               type: 'TemplateRenderMethod',
-              renderSuite: 'nfc-dynamic',
+              renderSuite: 'nfc',
+              renderProperty: ['/credentialSubject/image']
+              // No template - should fail!
+            }
+          };
+
+          let result;
+          let err;
+          try {
+            result = await webWallet.nfcRenderer.renderToNfc({credential});
+          } catch(e) {
+            err = e;
+          }
+
+          should.exist(err);
+          should.not.exist(result);
+          err.message.should.contain('template');
+        }
+      );
+
+      it('should decode large template successfully',
+        async function() {
+          if(!eadCredential) {
+            this.skip();
+          }
+
+          // Get the actual image from credential for comparison
+          const actualImage = eadCredential.credentialSubject.image;
+
+          // Encode the image as base58 multibase template
+          const imageBytes = new TextEncoder().encode(actualImage);
+          const base58 = await import('base58-universal');
+          const encodedImage = 'z' + base58.encode(imageBytes);
+
+          const credential = {
+            ...eadCredential,
+            renderMethod: {
+              type: 'TemplateRenderMethod',
+              renderSuite: 'nfc',
+              // Large template with image data
+              template: encodedImage,
+              // Validates field exists
               renderProperty: ['/credentialSubject/image']
             }
           };
@@ -1039,16 +1454,14 @@ describe('NFC Renderer', function() {
           should.exist(result.bytes);
 
           const decoded = new TextDecoder().decode(result.bytes);
-          // Use regex to check starts with
           decoded.should.match(/^data:image\/png;base64,/);
 
           // Verify it's the full large image (should be > 50KB)
           result.bytes.length.should.be.greaterThan(50000);
         }
       );
+
     });
-
   });
-
 });
 
