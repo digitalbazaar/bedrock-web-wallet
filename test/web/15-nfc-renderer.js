@@ -1,9 +1,7 @@
 import * as webWallet from '@bedrock/web-wallet';
-// console.log(webWallet.nfcRenderer);
-// console.log(typeof webWallet.nfcRenderer.supportsNFC);
 
 describe('NFC Renderer', function() {
-  describe('supportsNFC()', function() {
+  describe('supportsNfc()', function() {
     // Test to verify if a credential supports NFC rendering.
     it('should return true for credential with nfc renderSuite and template',
       async () => {
@@ -17,17 +15,16 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(true);
       }
     );
 
-    it('should return true even when template is missing ' +
-      '(detection, not validation',
+    it('should return false when template is missing ' +
+      '(pre-filters invalid methods)',
     async () => {
-      // Note: supportsNFC() only detects NFC capability, it doesn't validate.
-      // This credential will fail in renderToNfc() due to missing template.
+      // supportsNfc() should only return true for VALID render methods.
       const credential = {
         '@context': ['https://www.w3.org/ns/credentials/v2'],
         type: ['VerifiableCredential'],
@@ -43,9 +40,9 @@ describe('NFC Renderer', function() {
         }
       };
 
-      const result = webWallet.nfcRenderer.supportsNFC({credential});
+      const result = webWallet.nfcRenderer.supportsNfc({credential});
       should.exist(result);
-      result.should.equal(true);
+      result.should.equal(false);
     }
     );
 
@@ -61,7 +58,7 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(true);
       }
@@ -79,7 +76,7 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(true);
       }
@@ -103,7 +100,7 @@ describe('NFC Renderer', function() {
           ]
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(true);
       }
@@ -119,7 +116,7 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(false);
       }
@@ -136,7 +133,7 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(false);
       }
@@ -155,7 +152,7 @@ describe('NFC Renderer', function() {
           }
         };
 
-        const result = webWallet.nfcRenderer.supportsNFC({credential});
+        const result = webWallet.nfcRenderer.supportsNfc({credential});
         should.exist(result);
         result.should.equal(true);
       }
@@ -252,8 +249,10 @@ describe('NFC Renderer', function() {
     );
 
     // Field validation: TemplateRenderMethod uses 'template', not 'payload'
-    it('should fail when TemplateRenderMethod has both template and payload',
+    it('should ignore payload field when TemplateRenderMethod has both fields',
       async () => {
+        // Per spec: unknown fields are ignored
+        // TemplateRenderMethod uses 'template', 'payload' is ignored
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
@@ -261,7 +260,7 @@ describe('NFC Renderer', function() {
             type: 'TemplateRenderMethod',
             renderSuite: 'nfc',
             // "Hello NFC"
-            template: 'z2drAj5bAkJFsTPKmBvG3Z',
+            template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
             // "Different"
             payload: 'uRGlmZmVyZW50'
           }
@@ -275,9 +274,15 @@ describe('NFC Renderer', function() {
           err = e;
         }
 
-        should.exist(err);
-        should.not.exist(result);
-        err.message.should.contain('template');
+        // Should succeed - payload is ignored
+        should.not.exist(err);
+        should.exist(result);
+        should.exist(result.bytes);
+
+        // Verify template was used (not payload)
+        const decoded = new TextDecoder().decode(result.bytes);
+        decoded.should.equal('Hello NFC');
+        decoded.should.not.equal('Different');
       }
     );
 
@@ -304,7 +309,8 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain('payload');
+        // Pre-filtered: render method not found (missing template)
+        err.message.should.contain('does not support NFC');
       }
     );
 
@@ -317,7 +323,7 @@ describe('NFC Renderer', function() {
           renderMethod: {
             type: 'TemplateRenderMethod',
             renderSuite: 'nfc'
-            // No template field
+            // No template field - pre-filtered as invalid
           }
         };
 
@@ -331,7 +337,8 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain('template');
+        // Pre-filtered: render method not found (missing template)
+        err.message.should.contain('does not support NFC');
       }
     );
 
@@ -464,6 +471,7 @@ describe('NFC Renderer', function() {
     it('should fail when only renderProperty exists without template',
       async () => {
         // In unified architecture, template is always required
+        // Without template, render method is pre-filtered as invalid
         const credential = {
           '@context': ['https://www.w3.org/ns/credentials/v2'],
           type: ['VerifiableCredential'],
@@ -488,7 +496,8 @@ describe('NFC Renderer', function() {
 
         should.exist(err);
         should.not.exist(result);
-        err.message.should.contain('template');
+        // Pre-filtered: render method not found
+        err.message.should.contain('does not support NFC');
       }
     );
 
@@ -1196,7 +1205,7 @@ describe('NFC Renderer', function() {
       }
     });
 
-    describe('supportsNFC() - EAD from URL', function() {
+    describe('supportsNfc() - EAD from URL', function() {
       it('should return false for EAD credential without renderMethod',
         function() {
           // Skip if credential wasn't loaded
@@ -1209,7 +1218,7 @@ describe('NFC Renderer', function() {
           const credentialWithoutRenderMethod = {...eadCredential};
           delete credentialWithoutRenderMethod.renderMethod;
 
-          const result = webWallet.nfcRenderer.supportsNFC({
+          const result = webWallet.nfcRenderer.supportsNfc({
             credential: credentialWithoutRenderMethod
           });
 
@@ -1224,7 +1233,7 @@ describe('NFC Renderer', function() {
             this.skip();
           }
 
-          const result = webWallet.nfcRenderer.supportsNFC({
+          const result = webWallet.nfcRenderer.supportsNfc({
             credential: eadCredential
           });
 
@@ -1233,7 +1242,7 @@ describe('NFC Renderer', function() {
         }
       );
 
-      it('should return true when adding nfc renderMethod with renderProperty',
+      it('should return false when adding nfc renderMethod with renderProperty',
         function() {
           if(!eadCredential) {
             this.skip();
@@ -1245,16 +1254,17 @@ describe('NFC Renderer', function() {
               type: 'TemplateRenderMethod',
               renderSuite: 'nfc',
               renderProperty: ['/credentialSubject/givenName']
-              // Note: no template, but supportsNFC() only checks capability
+              // Note: no template, but supportsNfc() only checks capability
             }
           };
 
-          const result = webWallet.nfcRenderer.supportsNFC({
+          const result = webWallet.nfcRenderer.supportsNfc({
             credential: credentialWithDynamic
           });
 
           should.exist(result);
-          result.should.equal(true);
+          // Pre-filtered: returns false (not a valid NFC render method)
+          result.should.equal(false);
         }
       );
 
@@ -1273,7 +1283,7 @@ describe('NFC Renderer', function() {
             }
           };
 
-          const result = webWallet.nfcRenderer.supportsNFC({
+          const result = webWallet.nfcRenderer.supportsNfc({
             credential
           });
 
@@ -1311,8 +1321,8 @@ describe('NFC Renderer', function() {
 
           should.exist(err);
           should.not.exist(result);
-          err.message.should.contain('template');
-
+          // Pre-filtered: render method not found
+          err.message.should.contain('does not support NFC');
         }
       );
 
@@ -1418,7 +1428,8 @@ describe('NFC Renderer', function() {
 
           should.exist(err);
           should.not.exist(result);
-          err.message.should.contain('template');
+          // Pre-filtered: render method not found
+          err.message.should.contain('does not support NFC');
         }
       );
 
