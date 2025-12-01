@@ -4,6 +4,9 @@
   "description": "Bedrock Web Wallet",
   "type": "module",
   "exports": "./lib/index.js",
+  "browser": {
+    "./lib/util.js": "./lib/utilBrowser.js"
+  },
   "files": [
     "lib/*"
   ],
