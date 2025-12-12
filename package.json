@@ -35,7 +35,7 @@
     "base64url-universal": "^2.0.0",
     "did-veres-one": "^16.0.1",
     "ed25519-signature-2018-context": "^1.1.0",
-    "ethers": "^6.13.0",
+    "ethers": "^6.16.0",
     "json-pointer": "^0.6.2",
     "jsonld-signatures": "^11.3.0",
     "p-all": "^5.0.0",
