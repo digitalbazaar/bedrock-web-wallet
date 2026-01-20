@@ -18,6 +18,7 @@
     "@digitalbazaar/bbs-2023-cryptosuite": "^2.0.1",
     "@digitalbazaar/data-integrity": "^2.5.0",
     "@digitalbazaar/data-integrity-context": "^2.0.1",
+    "@digitalbazaar/di-sd-primitives": "^3.1.0",
     "@digitalbazaar/ecdsa-sd-2023-cryptosuite": "^3.4.1",
     "@digitalbazaar/ed25519-signature-2018": "^4.0.0",
     "@digitalbazaar/ed25519-signature-2020": "^5.4.0",
