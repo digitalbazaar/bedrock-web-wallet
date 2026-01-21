@@ -1,6 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
-## 14.6.4 - 2025-mm-dd
+## 15.0.0 - 2025-mm-dd
+
+### Changed
+- **BREAKING**: Update dependencies:
+  - `@digitalbazaar/lru-memoize@4`
+  - `@digitalbazaar/oid4-client@5`.
 
 ### Fixed
 - Removed debug log.
