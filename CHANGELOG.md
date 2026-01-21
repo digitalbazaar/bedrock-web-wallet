@@ -7,6 +7,8 @@
   - `@bedrock/web-profile-manager@22.1.0` (major version update).
   - `@digitalbazaar/lru-memoize@4`
   - `@digitalbazaar/oid4-client@5`.
+- **BREAKING**: `cryptoSuites` export has been renamed to `cryptosuites` to
+  matching naming convention.
 
 ### Fixed
 - Removed debug log.
