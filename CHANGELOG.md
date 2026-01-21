@@ -1,9 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.0.0 - 2025-mm-dd
+## 15.0.0 - 2026-01-dd
 
 ### Changed
 - **BREAKING**: Update dependencies:
+  - `@bedrock/web-profile-manager@22.1.0` (major version update).
   - `@digitalbazaar/lru-memoize@4`
   - `@digitalbazaar/oid4-client@5`.
 
