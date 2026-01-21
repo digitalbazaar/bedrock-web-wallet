@@ -106,7 +106,6 @@ describe('presentations.sign()', function() {
     }
     should.not.exist(err);
     should.exist(signedPresentation);
-    console.log(JSON.stringify(signedPresentation, null, 2));
     assertSignedPresentation({
       signedPresentation,
       credential: verifiableCredential,
