@@ -1,12 +1,10 @@
 /*!
- * Copyright (c) 2022-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2022-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import {config} from '@bedrock/core';
-import {createRequire} from 'node:module';
 import {fileURLToPath} from 'url';
 import path from 'path';
 
-const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // MongoDB
