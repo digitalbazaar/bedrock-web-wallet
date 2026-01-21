@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2022-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2022-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as webWallet from '@bedrock/web-wallet';
 import {
@@ -208,9 +208,9 @@ describe('presentations.sign()', function() {
         {name: 'eddsa-rdfc-2022'},
       ],
       [
-        {name: 'unsupportedType'},
+        {name: 'unsupportedType1'},
         {name: 'eddsa-rdfc-2022'},
-        {name: 'unsupportedType'},
+        {name: 'unsupportedType2'},
       ]
     ];
     let signedPresentation;
@@ -254,9 +254,9 @@ describe('presentations.sign()', function() {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
         acceptedProofTypes: [
-          {name: 'unsupportedType'},
-          {name: 'unsupportedType'},
-          {name: 'unsupportedType'},
+          {name: 'unsupportedType1'},
+          {name: 'unsupportedType2'},
+          {name: 'unsupportedType3'},
         ]
       });
     } catch(e) {
