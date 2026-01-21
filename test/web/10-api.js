@@ -31,7 +31,7 @@ describe('presentations.sign()', function() {
     profileId = profile.id;
   });
   it('should successfully sign a presentation with default proof type ' +
-    '"Ed25519Signature2018" if no "acceptedProofTypes" is provided.',
+    '"eddsa-rdfc-2022" if no "acceptedProofTypes" is provided.',
   async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -54,11 +54,11 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'Ed25519Signature2018'
+      expectedProofType: 'DataIntegrityProof'
     });
   });
   it('should successfully sign a presentation with default proof type ' +
-    '"Ed25519Signature2018" if "acceptedProofTypes" is an empty array.',
+    '"eddsa-rdfc-2022" if "acceptedProofTypes" is an empty array.',
   async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -82,14 +82,14 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'Ed25519Signature2018'
+      expectedProofType: 'DataIntegrityProof'
     });
   });
   it('should successfully sign a presentation with updated default signature ' +
     'suite if wallet signatureSuite config is changed.',
   async () => {
-    // Intentionally change signatureSuite config to eddsa-2022
-    config.wallet.defaults.signatureSuite = 'eddsa-2022';
+    // Intentionally change signatureSuite config to Ed25519Signature2020
+    config.wallet.defaults.signatureSuite = 'Ed25519Signature2020';
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
     const unsignedPresentation = createUnsignedPresentation({
@@ -106,41 +106,13 @@ describe('presentations.sign()', function() {
     }
     should.not.exist(err);
     should.exist(signedPresentation);
+    console.log(JSON.stringify(signedPresentation, null, 2));
     assertSignedPresentation({
       signedPresentation,
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'DataIntegrityProof',
-      expectedCryptosuite: 'eddsa-2022'
-    });
-  });
-  it('should successfully sign a presentation with "acceptedProofTypes" ' +
-    '"eddsa-2022".', async () => {
-    // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
-    const unsignedPresentation = createUnsignedPresentation({
-      profileId, verifiableCredential, presentationId
-    });
-    let signedPresentation;
-    let err;
-    try {
-      signedPresentation = await webWallet.presentations.sign({
-        challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [{name: 'eddsa-2022'}]
-      });
-    } catch(e) {
-      err = e;
-    }
-    should.not.exist(err);
-    should.exist(signedPresentation);
-    assertSignedPresentation({
-      signedPresentation,
-      credential: verifiableCredential,
-      presentationId,
-      profileId,
-      expectedProofType: 'DataIntegrityProof',
-      expectedCryptosuite: 'eddsa-2022'
+      expectedProofType: 'Ed25519Signature2020',
     });
   });
   it('should successfully sign a presentation with "acceptedProofTypes" ' +
@@ -211,8 +183,7 @@ describe('presentations.sign()', function() {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
         acceptedProofTypes: [
-          {name: 'eddsa-2022'},
-          {name: 'Ed25519Signature2018'},
+          {name: 'eddsa-rdfc-2022'},
           {name: 'Ed25519Signature2020'},
         ]
       });
@@ -227,7 +198,7 @@ describe('presentations.sign()', function() {
       presentationId,
       profileId,
       expectedProofType: 'DataIntegrityProof',
-      expectedCryptosuite: 'eddsa-2022'
+      expectedCryptosuite: 'eddsa-rdfc-2022'
     });
   });
   it('should successfully sign a presentation with the supported type ' +
@@ -235,11 +206,11 @@ describe('presentations.sign()', function() {
     const acceptedProofTypes = [
       [
         {name: 'unsupportedType'},
-        {name: 'eddsa-2022'},
+        {name: 'eddsa-rdfc-2022'},
       ],
       [
         {name: 'unsupportedType'},
-        {name: 'eddsa-2022'},
+        {name: 'eddsa-rdfc-2022'},
         {name: 'unsupportedType'},
       ]
     ];
@@ -267,7 +238,7 @@ describe('presentations.sign()', function() {
         presentationId,
         profileId,
         expectedProofType: 'DataIntegrityProof',
-        expectedCryptosuite: 'eddsa-2022'
+        expectedCryptosuite: 'eddsa-rdfc-2022'
       });
     }
   });
