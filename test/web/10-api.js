@@ -30,8 +30,8 @@ describe('presentations.sign()', function() {
     });
     profileId = profile.id;
   });
-  it('should successfully sign a presentation with default proof type ' +
-    '"eddsa-rdfc-2022" if no "acceptedProofTypes" is provided.',
+  it('should successfully sign a presentation with default cryptosuite ' +
+    '"eddsa-rdfc-2022" if no "acceptedCryptosuites" is provided.',
   async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -54,11 +54,12 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'DataIntegrityProof'
+      expectedProofType: 'DataIntegrityProof',
+      expectedCryptosuite: 'eddsa-rdfc-2022'
     });
   });
-  it('should successfully sign a presentation with default proof type ' +
-    '"eddsa-rdfc-2022" if "acceptedProofTypes" is an empty array.',
+  it('should successfully sign a presentation with default cryptosuite ' +
+    '"eddsa-rdfc-2022" if "acceptedCryptosuites" is an empty array.',
   async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -70,7 +71,7 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: []
+        acceptedCryptosuites: []
       });
     } catch(e) {
       err = e;
@@ -82,7 +83,8 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'DataIntegrityProof'
+      expectedProofType: 'DataIntegrityProof',
+      expectedCryptosuite: 'eddsa-rdfc-2022'
     });
   });
   it('should successfully sign a presentation with updated default signature ' +
@@ -111,10 +113,10 @@ describe('presentations.sign()', function() {
       credential: verifiableCredential,
       presentationId,
       profileId,
-      expectedProofType: 'Ed25519Signature2020',
+      expectedProofType: 'Ed25519Signature2020'
     });
   });
-  it('should successfully sign a presentation with "acceptedProofTypes" ' +
+  it('should successfully sign a presentation with "acceptedCryptosuites" ' +
     '"eddsa-rdfc-2022".', async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -126,7 +128,7 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [{name: 'eddsa-rdfc-2022'}]
+        acceptedCryptosuites: [{cryptosuite: 'eddsa-rdfc-2022'}]
       });
     } catch(e) {
       err = e;
@@ -142,7 +144,7 @@ describe('presentations.sign()', function() {
       expectedCryptosuite: 'eddsa-rdfc-2022'
     });
   });
-  it('should successfully sign a presentation with "acceptedProofTypes" ' +
+  it('should successfully sign a presentation with "acceptedCryptosuites" ' +
     '"Ed25519Signature2020".', async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
@@ -154,7 +156,7 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [{name: 'Ed25519Signature2020'}]
+        acceptedCryptosuites: [{cryptosuite: 'Ed25519Signature2020'}]
       });
     } catch(e) {
       err = e;
@@ -170,7 +172,7 @@ describe('presentations.sign()', function() {
     });
   });
   it('should successfully sign a presentation with the first type specified ' +
-    'in the "acceptedProofTypes" list if all are supported.', async () => {
+    'in the "acceptedCryptosuites" list if all are supported.', async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
     const unsignedPresentation = createUnsignedPresentation({
@@ -181,9 +183,9 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [
-          {name: 'eddsa-rdfc-2022'},
-          {name: 'Ed25519Signature2020'},
+        acceptedCryptosuites: [
+          {cryptosuite: 'eddsa-rdfc-2022'},
+          {cryptosuite: 'Ed25519Signature2020'},
         ]
       });
     } catch(e) {
@@ -201,21 +203,21 @@ describe('presentations.sign()', function() {
     });
   });
   it('should successfully sign a presentation with the supported type ' +
-    'from the "acceptedProofTypes" list.', async () => {
-    const acceptedProofTypes = [
+    'from the "acceptedCryptosuites" list.', async () => {
+    const acceptedCryptosuites = [
       [
-        {name: 'unsupportedType'},
-        {name: 'eddsa-rdfc-2022'},
+        {cryptosuite: 'unsupportedType'},
+        {cryptosuite: 'eddsa-rdfc-2022'},
       ],
       [
-        {name: 'unsupportedType1'},
-        {name: 'eddsa-rdfc-2022'},
-        {name: 'unsupportedType2'},
+        {cryptosuite: 'unsupportedType1'},
+        {cryptosuite: 'eddsa-rdfc-2022'},
+        {cryptosuite: 'unsupportedType2'},
       ]
     ];
     let signedPresentation;
     let err;
-    for(const proofTypes of acceptedProofTypes) {
+    for(const cryptosuites of acceptedCryptosuites) {
       // create unsigned presentation
       const presentationId = `urn:uuid:${uuid()}`;
       const unsignedPresentation = createUnsignedPresentation({
@@ -224,7 +226,7 @@ describe('presentations.sign()', function() {
       try {
         signedPresentation = await webWallet.presentations.sign({
           challenge, domain, profileId, presentation: unsignedPresentation,
-          acceptedProofTypes: proofTypes
+          acceptedCryptosuites: cryptosuites
         });
       } catch(e) {
         err = e;
@@ -242,7 +244,7 @@ describe('presentations.sign()', function() {
     }
   });
   it('should fail to sign a presentation if all the types specified in ' +
-    'the "acceptedProofTypes" list are unsupported.', async () => {
+    'the "acceptedCryptosuites" list are unsupported.', async () => {
     // create unsigned presentation
     const presentationId = `urn:uuid:${uuid()}`;
     const unsignedPresentation = createUnsignedPresentation({
@@ -253,10 +255,10 @@ describe('presentations.sign()', function() {
     try {
       signedPresentation = await webWallet.presentations.sign({
         challenge, domain, profileId, presentation: unsignedPresentation,
-        acceptedProofTypes: [
-          {name: 'unsupportedType1'},
-          {name: 'unsupportedType2'},
-          {name: 'unsupportedType3'},
+        acceptedCryptosuites: [
+          {cryptosuite: 'unsupportedType1'},
+          {cryptosuite: 'unsupportedType2'},
+          {cryptosuite: 'unsupportedType3'},
         ]
       });
     } catch(e) {
@@ -265,7 +267,6 @@ describe('presentations.sign()', function() {
     should.exist(err);
     should.not.exist(signedPresentation);
     err.message.should.contain(
-      'No supported proof type matches one of the accepted proof types'
-    );
+      'No supported cryptosuite matches one of the accepted cryptosuites');
   });
 });
