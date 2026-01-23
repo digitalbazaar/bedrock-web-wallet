@@ -10,8 +10,9 @@ import * as webWallet from '@bedrock/web-wallet';
  * without any modifications to their data model.
  *
  * Test credentials:
- * 1. EAD (Employment Authorization Document) - Legacy NfcRenderingTemplate2024
- * 2. FirstResponder (EMT) - New TemplateRenderMethod with outputPreference.mode
+ * 1. EAD (Employment Authorization Document) - Legacy NfcRenderingTemplate2024.
+ * 2. FirstResponder (EMT) - New TemplateRenderMethod with
+ * outputPreference.mode.
  */
 describe('NFC Renderer', function() {
   describe('Integration - Real Credentials', function() {
@@ -38,7 +39,7 @@ describe('NFC Renderer', function() {
           }
 
           eadCredential = await response.json();
-          console.log('✓ EAD Credential loaded from URL');
+          console.log('EAD Credential loaded from URL');
         } catch(error) {
           console.error('Failed to load EAD credential:', error);
           this.skip();
@@ -133,7 +134,7 @@ describe('NFC Renderer', function() {
           }
 
           frCredential = await response.json();
-          console.log('✓ FirstResponder Credential loaded from URL');
+          console.log('FirstResponder Credential loaded from URL');
         } catch(error) {
           console.error('Failed to load FirstResponder credential:', error);
           this.skip();
