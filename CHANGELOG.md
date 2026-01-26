@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.1.0 - 2026-01-dd
+## 15.1.0 - 2026-01-26
 
 ### Added
 - Add bundled `nfcRenderer` module with W3C `TemplateRenderMethod` and
