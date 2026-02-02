@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.2.0 - 2026-02-dd
+
+### Added
+- Add support for string values in `acceptedCryptosuites` in VPR queries.
+
 ## 15.1.0 - 2026-01-26
 
 ### Added
