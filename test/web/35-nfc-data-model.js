@@ -7,7 +7,7 @@ import * as webWallet from '@bedrock/web-wallet';
  * Tests for TemplateRenderMethod data model structure validation.
  *
  * TemplateRenderMethod structure:
- *
+ * ```
  * {
  *  "type": "TemplateRenderMethod",  // required.
  *  "renderEngine": "fixed",
@@ -18,7 +18,7 @@ import * as webWallet from '@bedrock/web-wallet';
  *    "mediaType": "application/octet-stream"
  *  }
  * }
- *
+ * ```
  * Note: outputPreference.mode, template requirement, and type validation
  * are covered in 15-nfc-support.js.
  * This file focuses on optional fields and field interactions.

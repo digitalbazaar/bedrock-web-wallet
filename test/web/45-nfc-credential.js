@@ -39,7 +39,7 @@ describe('NFC Renderer', function() {
           }
 
           eadCredential = await response.json();
-          console.log('EAD Credential loaded from URL');
+          // console.log('EAD Credential loaded from URL');
         } catch(error) {
           console.error('Failed to load EAD credential:', error);
           this.skip();
@@ -134,7 +134,7 @@ describe('NFC Renderer', function() {
           }
 
           frCredential = await response.json();
-          console.log('FirstResponder Credential loaded from URL');
+          // console.log('FirstResponder Credential loaded from URL');
         } catch(error) {
           console.error('Failed to load FirstResponder credential:', error);
           this.skip();
@@ -253,8 +253,8 @@ describe('NFC Renderer', function() {
           const renderMethods = Array.isArray(eadCredential.renderMethod) ?
             eadCredential.renderMethod : [eadCredential.renderMethod];
 
-          console.log('EAD renderMethod types:',
-            renderMethods.map(rm => rm.type));
+          // console.log('EAD renderMethod types:',
+          //   renderMethods.map(rm => rm.type));
 
           const nfcMethod = renderMethods.find(
             rm => rm.type === 'NfcRenderingTemplate2024'
@@ -274,8 +274,8 @@ describe('NFC Renderer', function() {
           const renderMethods = Array.isArray(frCredential.renderMethod) ?
             frCredential.renderMethod : [frCredential.renderMethod];
 
-          console.log('FirstResponder renderMethod types:',
-            renderMethods.map(rm => rm.type));
+          // console.log('FirstResponder renderMethod types:',
+          //   renderMethods.map(rm => rm.type));
 
           const nfcMethod = renderMethods.find(rm =>
             rm.type === 'TemplateRenderMethod' &&
