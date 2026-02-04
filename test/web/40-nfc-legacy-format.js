@@ -6,17 +6,19 @@ import * as webWallet from '@bedrock/web-wallet';
 /**
  * Tests for NfcRenderingTemplate2024 legacy format backward compatibility.
  *
- * Legacy format (bedrock-web-wallet existing credentials):
+ * Legacy format (bedrock-web-wallet existing credentials).
+ *
+ * ```
  * {
  *  "type": "NfcRenderingTemplate2024",
  *  "payload": "z..." | "u..." | "data:..."  // required (NOT 'template')
  * }
- *
+ * ```
  * Key differences from TemplateRenderMethod:
  *
- * Uses 'payload' field instead of 'template'
- * No outputPreference object required (type implies NFC)
- * No renderProperty support
+ * Uses 'payload' field instead of 'template'.
+ * No outputPreference object required (type implies NFC).
+ * No renderProperty support.
  *
  * Note: Detection tests (supportsNfc) are in 15-nfc-support.js.
  * This file focuses on rendering behavior (renderToNfc).
