@@ -4,6 +4,7 @@
 
 ### Fixed
 - Ensure `acceptedCryptosuites` are used when present.
+- Ensure `redirectUrl` is returned for completed vcapi exchanges when present.
 
 ## 15.2.0 - 2026-02-02
 
