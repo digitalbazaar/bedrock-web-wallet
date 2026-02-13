@@ -1,10 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.2.1 - 2026-02-dd
-
-### Fixed
-- Ensure `acceptedCryptosuites` are used when present.
-## 15.2.2 - 2026-02-dd
+## 15.2.2 - 2026-02-13
 
 ### Fixed
 - Ensure `redirectUrl` is returned for completed vcapi exchanges when present.
