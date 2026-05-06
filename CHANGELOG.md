@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.3.0 - 2026-mm-dd
+## 15.3.0 - 2026-05-06
 
 ### Added
 - Process interaction URLs provided over CHAPI.
