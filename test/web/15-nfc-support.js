@@ -148,7 +148,7 @@ describe('NFC Renderer', function() {
             type: ['VerifiableCredential'],
             renderMethod: {
               type: 'TemplateRenderMethod',
-              template: 'data:application/octet-stream;base64,SGVsbG8gTkZD',
+              template: 'data:application/octet-stream;base64,SGVsbG8gTkZD'
               // missing outputPreference
             }
           };

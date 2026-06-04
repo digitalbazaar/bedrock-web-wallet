@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.4.0 - 2026-06-dd
+
+### Changed
+- **NOTE**: Update supported platforms.
+  - Test on Node.js >=22.
+  - Update `engines.node` to `>=22`.
+
 ## 15.3.0 - 2026-05-06
 
 ### Added
