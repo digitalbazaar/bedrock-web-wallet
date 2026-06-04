@@ -37,7 +37,6 @@
     "@bedrock/web-session": "^6.0.0",
     "@bedrock/web-vc-store": "^8.0.1",
     "@bedrock/web-wallet": "file:..",
-    "@digitalbazaar/vc": "^7.0.0",
-    "uuid": "^10.0.0"
+    "@digitalbazaar/vc": "^7.0.0"
   }
 }
