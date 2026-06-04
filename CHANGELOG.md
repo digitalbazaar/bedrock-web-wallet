@@ -3,6 +3,20 @@
 ## 15.4.0 - 2026-06-dd
 
 ### Changed
+- Update dependencies:
+  - `@digitalbazaar/di-sd-primitives@3.3.0`
+  - `@digitalbazaar/ed25519-verification-key-2020@4.2.0`
+  - `@digitalbazaar/eddsa-rdfc-2022-cryptosuite@1.3.0`
+  - `@digitalbazaar/edv-client@16.3.0`
+  - `@digitalbazaar/http-client@4.3.0`
+  - `@digitalbazaar/oid4-client@5.13.0`
+  - `@digitalbazaar/vc@7.3.0`
+  - `@digitalbazaar/vpqr@6`
+  - `ajv@8.20.0`
+  - `jsonld-signatures@11.6.0`
+  - `p-all@5.0.1`
+  - `p-map@7.0.4`.
+- Update dev dependencies.
 - **NOTE**: Update supported platforms.
   - Test on Node.js >=22.
   - Update `engines.node` to `>=22`.
