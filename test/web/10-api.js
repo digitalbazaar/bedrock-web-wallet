@@ -42,7 +42,7 @@ describe('presentations.sign()', function() {
     let err;
     try {
       signedPresentation = await webWallet.presentations.sign({
-        challenge, domain, profileId, presentation: unsignedPresentation,
+        challenge, domain, profileId, presentation: unsignedPresentation
       });
     } catch(e) {
       err = e;
@@ -101,7 +101,7 @@ describe('presentations.sign()', function() {
     let err;
     try {
       signedPresentation = await webWallet.presentations.sign({
-        challenge, domain, profileId, presentation: unsignedPresentation,
+        challenge, domain, profileId, presentation: unsignedPresentation
       });
     } catch(e) {
       err = e;
@@ -185,7 +185,7 @@ describe('presentations.sign()', function() {
         challenge, domain, profileId, presentation: unsignedPresentation,
         acceptedCryptosuites: [
           {cryptosuite: 'eddsa-rdfc-2022'},
-          {cryptosuite: 'Ed25519Signature2020'},
+          {cryptosuite: 'Ed25519Signature2020'}
         ]
       });
     } catch(e) {
@@ -207,12 +207,12 @@ describe('presentations.sign()', function() {
     const acceptedCryptosuites = [
       [
         {cryptosuite: 'unsupportedType'},
-        {cryptosuite: 'eddsa-rdfc-2022'},
+        {cryptosuite: 'eddsa-rdfc-2022'}
       ],
       [
         {cryptosuite: 'unsupportedType1'},
         {cryptosuite: 'eddsa-rdfc-2022'},
-        {cryptosuite: 'unsupportedType2'},
+        {cryptosuite: 'unsupportedType2'}
       ]
     ];
     let signedPresentation;
@@ -258,7 +258,7 @@ describe('presentations.sign()', function() {
         acceptedCryptosuites: [
           {cryptosuite: 'unsupportedType1'},
           {cryptosuite: 'unsupportedType2'},
-          {cryptosuite: 'unsupportedType3'},
+          {cryptosuite: 'unsupportedType3'}
         ]
       });
     } catch(e) {

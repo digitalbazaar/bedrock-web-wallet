@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2026 Digital Bazaar, Inc.
  */
 export const mockCredential = {
   '@context': [
@@ -35,10 +35,10 @@ export const mockCredential = {
   proof: {
     type: 'Ed25519Signature2020',
     created: '2021-05-11T18:44:41Z',
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     verificationMethod: 'did:key:z6MkmHipNuE35C6ona8Hkgpq3mpn4C3rX5kp1SjwcZ7HCWnH#z6MkmHipNuE35C6ona8Hkgpq3mpn4C3rX5kp1SjwcZ7HCWnH',
     proofPurpose: 'assertionMethod',
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     proofValue: 'zqvrFELnqNYWBEsqkHPhqxXuQaNf3dpsQ3s6dLgkS1jAtAwXfwxf2TirW4kyPAUHNU3TXbS7JT38aF4jtnXGwiBT'
   }
 };

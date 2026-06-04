@@ -11,7 +11,7 @@
     "lib/*"
   ],
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint"
   },
   "dependencies": {
     "@digitalbazaar/age-verification-context": "^2.1.0",
@@ -43,10 +43,8 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-digitalbazaar": "^5.2.0",
-    "eslint-plugin-jsdoc": "^48.11.0",
-    "eslint-plugin-unicorn": "^55.0.0"
+    "@digitalbazaar/eslint-config": "^8.0.1",
+    "eslint": "^9.39.4"
   },
   "peerDependencies": {
     "@bedrock/web": "^3.1.0",
@@ -57,7 +55,7 @@
     "@bedrock/web-vc-store": "^8.0.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "repository": {
     "type": "git",

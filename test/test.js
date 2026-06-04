@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2022-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2022-2024 Digital Bazaar, Inc.
  */
 import * as bedrock from '@bedrock/core';
 import {handlers} from '@bedrock/meter-http';
@@ -23,14 +23,14 @@ import '@bedrock/did-io';
 const productIdMap = new Map();
 
 const products = [{
-  // eslint-disable-next-line max-len
-  // Use product ID found in bedrock-profile-http: https://github.com/digitalbazaar/bedrock-profile-http/blob/ded73027d0ae6db929a543057ec60ad0a58c5da9/lib/http.js#L60
+  // Use product ID found in bedrock-profile-http:
+  // https://github.com/digitalbazaar/bedrock-profile-http/blob/ded73027d0ae6db929a543057ec60ad0a58c5da9/lib/http.js#L60
   id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
   name: 'Example KMS',
   service: {
     // default dev `id` configured in `bedrock-kms-http`
     id: 'did:key:z6MkwZ7AXrDpuVi5duY2qvVSx1tBkGmVnmRjDvvwzoVnAzC4',
-    type: 'webkms',
+    type: 'webkms'
   }
 }, {
   // Use default `veres-vault` dev `id` and `serviceId`
@@ -39,7 +39,7 @@ const products = [{
   service: {
     // default dev `id` configured in `bedrock-edv-storage`
     id: 'did:key:z6MkhNyDoLpNcPv5grXoJSJVJjvApd46JU5nPL6cwi88caYW',
-    type: 'edv',
+    type: 'edv'
   }
 }];
 
