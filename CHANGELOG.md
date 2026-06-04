@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.4.0 - 2026-06-dd
+## 15.4.0 - 2026-06-04
 
 ### Changed
 - Update dependencies:
