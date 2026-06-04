@@ -47,7 +47,10 @@ config.karma.config.webpack.resolve = {
     'node_modules',
     path.resolve(__dirname, '..', 'node_modules'),
     path.resolve(__dirname, 'node_modules')
-  ]
+  ],
+  fallback: {
+    crypto: false
+  }
 };
 
 // do not fetch v1 dids from testnet

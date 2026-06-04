@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2022-2026 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2022-2026 Digital Bazaar, Inc.
  */
 import * as webWallet from '@bedrock/web-wallet';
 import {
@@ -7,7 +7,6 @@ import {
   initializeWebWallet
 } from './helpers.js';
 import {config} from '@bedrock/web';
-import {v4 as uuid} from 'uuid';
 import {mockCredential as verifiableCredential} from './mock-data.js';
 
 describe('presentations.sign()', function() {
@@ -19,7 +18,7 @@ describe('presentations.sign()', function() {
     const edvBaseUrl = `${window.location.origin}/edvs`;
     await initializeWebWallet({edvBaseUrl});
 
-    const testEmail = `test-${uuid()}@example.com`;
+    const testEmail = `test-${globalThis.crypto.randomUUID()}@example.com`;
     const accountId = 'urn:uuid:ffaf5d84-7dc2-4f7b-9825-cc8d2e5a5d06';
 
     // create a profile for test
@@ -34,7 +33,7 @@ describe('presentations.sign()', function() {
     '"eddsa-rdfc-2022" if no "acceptedCryptosuites" is provided.',
   async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -62,7 +61,7 @@ describe('presentations.sign()', function() {
     '"eddsa-rdfc-2022" if "acceptedCryptosuites" is an empty array.',
   async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -93,7 +92,7 @@ describe('presentations.sign()', function() {
     // Intentionally change signatureSuite config to Ed25519Signature2020
     config.wallet.defaults.signatureSuite = 'Ed25519Signature2020';
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -119,7 +118,7 @@ describe('presentations.sign()', function() {
   it('should successfully sign a presentation with "acceptedCryptosuites" ' +
     '"eddsa-rdfc-2022".', async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -147,7 +146,7 @@ describe('presentations.sign()', function() {
   it('should successfully sign a presentation with "acceptedCryptosuites" ' +
     '"Ed25519Signature2020".', async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -174,7 +173,7 @@ describe('presentations.sign()', function() {
   it('should successfully sign a presentation with the first type specified ' +
     'in the "acceptedCryptosuites" list if all are supported.', async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });
@@ -219,7 +218,7 @@ describe('presentations.sign()', function() {
     let err;
     for(const cryptosuites of acceptedCryptosuites) {
       // create unsigned presentation
-      const presentationId = `urn:uuid:${uuid()}`;
+      const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
       const unsignedPresentation = createUnsignedPresentation({
         profileId, verifiableCredential, presentationId
       });
@@ -246,7 +245,7 @@ describe('presentations.sign()', function() {
   it('should fail to sign a presentation if all the types specified in ' +
     'the "acceptedCryptosuites" list are unsupported.', async () => {
     // create unsigned presentation
-    const presentationId = `urn:uuid:${uuid()}`;
+    const presentationId = `urn:uuid:${globalThis.crypto.randomUUID()}`;
     const unsignedPresentation = createUnsignedPresentation({
       profileId, verifiableCredential, presentationId
     });

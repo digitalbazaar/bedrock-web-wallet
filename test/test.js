@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2022-2024 Digital Bazaar, Inc.
+ * Copyright (c) 2022-2026 Digital Bazaar, Inc.
  */
 import * as bedrock from '@bedrock/core';
 import {handlers} from '@bedrock/meter-http';
