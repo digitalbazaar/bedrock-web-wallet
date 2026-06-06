@@ -1,5 +1,12 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.7.1 - 2026-06-dd
+
+### Fixed
+- Construct the local credential store from its own `local.options` config
+  instead of `remote.options`. The local store previously inherited the remote
+  store's construction options, leaving `local.options` unused.
+
 ## 15.7.0 - 2026-06-17
 
 ### Added
