@@ -3,7 +3,7 @@
 ## 15.4.1 - 2026-06-dd
 
 ### Changed
-- Use `@digitalbazaar/oid4-client@5.13.0` to improve OIDVCI support.
+- Use `@digitalbazaar/oid4-client@5.13.1` to improve OIDVCI support.
 
 ## 15.4.0 - 2026-06-04
 
