@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.4.1 - 2026-06-dd
+## 15.5.0 - 2026-06-10
 
 ### Changed
 - Use `@digitalbazaar/oid4-client@5.13.1` to improve OIDVCI support.
