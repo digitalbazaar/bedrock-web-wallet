@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.6.0 - 2026-06-dd
+
+### Added
+- Add exchanges `createClientInteraction()` API and enable `start()` to be
+  called with a previously created `interaction` instance.
+
 ## 15.5.0 - 2026-06-10
 
 ### Changed
