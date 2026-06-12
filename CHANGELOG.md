@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.6.0 - 2026-06-dd
+## 15.6.0 - 2026-06-12
 
 ### Added
 - Add exchanges `createClientInteraction()` API and enable `start()` to be
