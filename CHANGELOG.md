@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.7.0 - 2026-06-dd
+## 15.7.0 - 2026-06-17
 
 ### Added
 - Add additional helpful debug logging to exchange query processing.
