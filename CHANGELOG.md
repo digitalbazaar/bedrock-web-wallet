@@ -6,6 +6,10 @@
 - Construct the local credential store from its own `local.options` config
   instead of `remote.options`. The local store previously inherited the remote
   store's construction options, leaving `local.options` unused.
+- Fix `createCapabilities()` to call `profileManager.getProfileMeters()` instead
+  of the removed `getMeters()` method, and to use its updated return shape. The
+  `urn:edv:documents` branch previously threw
+  `TypeError: profileManager.getMeters is not a function`.
 
 ## 15.7.0 - 2026-06-17
 
