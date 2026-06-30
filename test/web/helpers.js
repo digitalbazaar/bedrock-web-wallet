@@ -7,7 +7,11 @@ import {config} from '@bedrock/web';
 
 export async function initializeWebWallet({edvBaseUrl}) {
   config.wallet.defaults.edvBaseUrl = edvBaseUrl;
-  await webWallet.initialize();
+  // the wallet is a page-level singleton; Karma loads every test file into one
+  // page, so only the first caller initializes it
+  if(!webWallet.profileManager) {
+    await webWallet.initialize();
+  }
 }
 
 export async function createProfile({name, email, accountId}) {
