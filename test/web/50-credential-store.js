@@ -6,7 +6,7 @@ import {createCredentialStores} from '@bedrock/web-wallet';
 describe('createCredentialStores()', function() {
   // make local/remote diverge so a mix-up between the two is observable;
   // pre-fix code paired the LOCAL store with the REMOTE options block
-  const credentialStore = {
+  const credentialStoreConfig = {
     local: {options: {addBundleContentsFirst: false}},
     remote: {options: {addBundleContentsFirst: true}}
   };
@@ -17,7 +17,7 @@ describe('createCredentialStores()', function() {
   it('should create the local store from its own options and EDV client.',
     async () => {
       const {local} = createCredentialStores({
-        credentialStore, localEdvClient, remoteEdvClient
+        credentialStoreConfig, localEdvClient, remoteEdvClient
       });
       // local store must use the LOCAL options block (regression guard:
       // previously it used `remote.options`)
@@ -29,7 +29,7 @@ describe('createCredentialStores()', function() {
   it('should create the remote store from its own options and EDV client.',
     async () => {
       const {remote} = createCredentialStores({
-        credentialStore, localEdvClient, remoteEdvClient
+        credentialStoreConfig, localEdvClient, remoteEdvClient
       });
       remote.addBundleContentsFirst.should.equal(true);
       remote.edvClient.should.equal(remoteEdvClient);
@@ -38,7 +38,7 @@ describe('createCredentialStores()', function() {
   it('should not let the local store inherit the remote store\'s options.',
     async () => {
       const {local, remote} = createCredentialStores({
-        credentialStore, localEdvClient, remoteEdvClient
+        credentialStoreConfig, localEdvClient, remoteEdvClient
       });
       local.addBundleContentsFirst.should.not.equal(
         remote.addBundleContentsFirst);
