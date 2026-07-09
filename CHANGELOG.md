@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.7.1 - 2026-06-dd
+## 15.7.1 - 2026-07-09
 
 ### Fixed
 - Construct the local credential store from its own `local.options` config
