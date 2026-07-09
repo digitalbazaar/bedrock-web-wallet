@@ -12,6 +12,7 @@
   `TypeError: profileManager.getMeters is not a function`. It also passed the
   `invocationTarget` object to `delegateCapability()` where a string URI is
   required. Both are now fixed and covered by an end-to-end test.
+- Improve openbadge `achievementType` query support.
 
 ## 15.7.0 - 2026-06-17
 
