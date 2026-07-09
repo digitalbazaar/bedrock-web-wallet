@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.7.2 - 2026-07-dd
+## 15.7.2 - 2026-07-09
 
 ### Fixed
 - Improve openbadge achievement query filter matching.
