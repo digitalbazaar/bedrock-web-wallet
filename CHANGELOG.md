@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.7.3 - 2026-mm-dd
+## 15.7.3 - 2026-07-19
 
 ### Fixed
 - Use `credentialMatches()` from `@digitalbazaar/oid4-client` library to
