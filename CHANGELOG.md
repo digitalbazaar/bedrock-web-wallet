@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.7.3 - 2026-mm-dd
+
+### Fixed
+- Use `credentialMatches()` from `@digitalbazaar/oid4-client` library to
+  implement more generalized credential matching.
+
 ## 15.7.2 - 2026-07-09
 
 ### Fixed
