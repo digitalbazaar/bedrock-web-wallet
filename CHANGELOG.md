@@ -5,6 +5,7 @@
 ### Added
 - Enable `records` to be passed to `CredentialStore.add()` so that custom
   `meta` for each `credential` in a record can be passed.
+- Allow creation of new confidence methods for VP signing.
 
 ## 15.7.3 - 2026-07-19
 
