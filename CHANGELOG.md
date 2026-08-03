@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.8.0 - 2026-mm-dd
+## 15.8.0 - 2026-08-02
 
 ### Added
 - Enable `records` to be passed to `CredentialStore.add()` so that custom
