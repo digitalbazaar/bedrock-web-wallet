@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.9.0 - 2026-mm-dd
+## 15.9.0 - 2026-08-03
 
 ### Added
 - Add support for storing enveloped verifiable credentials by transforming
