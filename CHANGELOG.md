@@ -11,6 +11,7 @@
   to trying to add credentials to storage or, alternatively, the
   `transformEnvelopedCredentials` flag must be set when calling `add()` on
   credential storage.
+- Support storing mdoc mDLs.
 
 ## 15.8.0 - 2026-08-02
 
