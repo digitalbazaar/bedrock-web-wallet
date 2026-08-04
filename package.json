@@ -36,6 +36,8 @@
     "@digitalbazaar/vc": "^7.3.0",
     "@digitalbazaar/vpqr": "^6.0.0",
     "@digitalbazaar/zcap": "^9.0.1",
+    "@owf/mdoc": "^0.6.0",
+    "@peculiar/x509": "^2.0.0",
     "ajv": "^8.20.0",
     "base58-universal": "^2.0.0",
     "base64url-universal": "^2.0.0",
@@ -44,7 +46,8 @@
     "json-pointer": "^0.6.2",
     "jsonld-signatures": "^11.6.0",
     "p-all": "^5.0.1",
-    "p-map": "^7.0.4"
+    "p-map": "^7.0.4",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@digitalbazaar/eslint-config": "^8.0.1",

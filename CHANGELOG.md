@@ -1,5 +1,17 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.9.0 - 2026-mm-dd
+
+### Added
+- Add support for storing enveloped verifiable credentials by transforming
+  supported envelope media types to verifiable credentials. Every new envelope
+  media type requires a new software update to support it.
+- Export `envelopes.transformEnvelopedCredential()` to enable transformation
+  of supported enveloped verifiable credentials; this must be called prior
+  to trying to add credentials to storage or, alternatively, the
+  `transformEnvelopedCredentials` flag must be set when calling `add()` on
+  credential storage.
+
 ## 15.8.0 - 2026-08-02
 
 ### Added
