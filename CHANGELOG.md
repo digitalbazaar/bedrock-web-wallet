@@ -1,5 +1,11 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.10.0 - 2026-08-dd
+
+### Added
+- Add mdoc mDL enveloped credential derivation (mdoc device response as an
+  `EnvelopedVerifiableCredential`).
+
 ## 15.9.0 - 2026-08-03
 
 ### Added
