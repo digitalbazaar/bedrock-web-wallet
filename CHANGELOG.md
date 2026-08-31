@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.10.1 - 2026-08-dd
+## 15.10.1 - 2026-08-31
 
 ### Fixed
 - Use `application/mdoc` media type for mdoc mDL envelope expression.
