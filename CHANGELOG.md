@@ -1,5 +1,31 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.11.0 - 20xx-xx-xx
+
+### Added
+- Add `completeInteractionChain()`, which runs every exchange an interaction
+  resolves into and returns `{credentials, exchangeCount, redirectUrl}`. An
+  exchange continues the chain by naming the next one in
+  `nextInteractionUrl`, which the VC-API exchange now carries through from
+  the exchange response; a `redirectUrl` is reported back rather than
+  followed, because both built-in protocols already use that field for the
+  protocol's own post-exchange browser redirect. Set `followRedirectUrl` to
+  chain through it anyway. Both the starting URL and every follow-on URL must
+  use `https:`, and a relative follow-on URL is resolved against the exchange
+  that named it. The number of exchanges (`maxExchanges`) and the number of
+  steps within one (`maxSteps`) are both bounded. A step that asks for a
+  presentation is answered by `onPresentationRequest`, and `onLegComplete`
+  runs after each exchange, before the next one starts, so a credential can
+  be stored before the next leg asks the holder to present it. Both callbacks
+  receive the current leg's interaction URL and origin, which are
+  self-asserted by whatever named them and are reported rather than trusted.
+
+### Changed
+- `exchanges.start()` no longer requires a CHAPI event. An exchange started
+  from an interaction URL has no caller awaiting a CHAPI response, so its
+  result is logged rather than bound to one, and `start()` now rejects a call
+  that names neither an event nor an interaction.
+
 ## 15.10.1 - 2026-08-31
 
 ### Fixed
