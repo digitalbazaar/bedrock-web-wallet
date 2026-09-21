@@ -135,8 +135,9 @@ await credentialStore.delete({id: credentialId});
 
 ### Run a credential exchange
 
-Exchanges are started from a [CHAPI](https://chapi.io/) event. The exchange
-protocol is auto-selected from the configured preference order. The returned
+Exchanges are started from a [CHAPI](https://chapi.io/) event, or from an
+interaction URL a coordinator handed the wallet. The exchange protocol is
+auto-selected from the configured preference order. The returned
 `Exchange` is advanced by calling `next()`, which works like an async iterator
 step: each call resolves to `{value, done}`.
 
@@ -202,9 +203,23 @@ The package's main export (`@bedrock/web-wallet`) exposes:
 - `getProfileEdvClient({profileId, referenceIdPrefix})` — get (and cache) an
   EDV client for a profile.
 
+### Interaction chains
+
+- `completeInteractionChain({interactionUrl, ...})` — runs every exchange an
+  interaction resolves into and returns
+  `{credentials, exchangeCount, redirectUrl}`. Both the starting URL and any
+  follow-on URL must use `https:`. An exchange continues the chain by naming
+  the next one in `nextInteractionUrl`; a `redirectUrl` is reported back
+  rather than followed, unless `followRedirectUrl` is set. The number of
+  exchanges (`maxExchanges`) and the number of steps within one (`maxSteps`)
+  are both bounded. Supply `onPresentationRequest` to answer a step that asks
+  for a presentation, and `onLegComplete` to store what a leg delivered before
+  the next one starts.
+
 ### Namespaces
 
-- `exchanges` — `start({event})` selects and starts a credential exchange.
+- `exchanges` — `start({event})` or `start({interaction})` selects and
+  starts a credential exchange.
 - `presentations` — `sign()`, `match()`, and `pruneCredentialProofs()`.
 - `helpers` — profile and capability helpers (`createProfile`,
   `createCapabilities`, NFC payload helpers, etc.).
