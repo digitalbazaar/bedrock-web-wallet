@@ -20,6 +20,11 @@
   receive the current leg's interaction URL and origin, which are
   self-asserted by whatever named them and are reported rather than trusted.
 
+### Fixed
+- Accept `credentials` in `CredentialStore.add()` again. The `records` check
+  ran before `records` was built from `credentials`, so every call that
+  passed `credentials` threw.
+
 ### Changed
 - `exchanges.start()` no longer requires a CHAPI event. An exchange started
   from an interaction URL has no caller awaiting a CHAPI response, so its
