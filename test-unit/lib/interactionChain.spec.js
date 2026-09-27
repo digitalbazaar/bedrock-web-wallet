@@ -358,6 +358,67 @@ describe('completeInteractionChain', () => {
       expect(second.verifiablePresentation).toBe(presentation);
     });
 
+    it('signs with the signOptions the handler answers with', async () => {
+      const presentation = {
+        type: 'VerifiablePresentation', holder: 'did:key:z6MkHolder'
+      };
+      const answerSignOptions = {suite: 'holder-suite'};
+      const h = harness({
+        [FIRST_URL]: [
+          {value: {verifiablePresentationRequest: VPR}, done: false},
+          {value: presentationOf(FIRST_VC), done: true}
+        ]
+      });
+      await completeInteractionChain({
+        interactionUrl: FIRST_URL,
+        onPresentationRequest: () => ({
+          verifiablePresentation: presentation, signOptions: answerSignOptions
+        }),
+        ...h
+      });
+      const [first, second] = h.exchanges[0].calls;
+      expect(first.signOptions).toBeUndefined();
+      expect(second.verifiablePresentation).toBe(presentation);
+      expect(second.signOptions).toBe(answerSignOptions);
+    });
+
+    it('uses the answer\'s signOptions for that step only', async () => {
+      const chainSignOptions = {suite: 'chain-suite'};
+      const answerSignOptions = {suite: 'holder-suite'};
+      const h = harness({
+        [FIRST_URL]: [
+          {value: {verifiablePresentationRequest: VPR}, done: false},
+          {value: {}, done: false},
+          {value: presentationOf(FIRST_VC), done: true}
+        ]
+      });
+      await completeInteractionChain({
+        interactionUrl: FIRST_URL, signOptions: chainSignOptions,
+        onPresentationRequest: () => ({
+          verifiablePresentation: {type: 'VerifiablePresentation'},
+          signOptions: answerSignOptions
+        }),
+        ...h
+      });
+      expect(h.exchanges[0].calls.map(call => call.signOptions)).toEqual(
+        [chainSignOptions, answerSignOptions, chainSignOptions]);
+    });
+
+    it('refuses an answer that names no presentation', async () => {
+      const h = harness({
+        [FIRST_URL]: [
+          {value: {verifiablePresentationRequest: VPR}, done: false}
+        ]
+      });
+      await expect(completeInteractionChain({
+        interactionUrl: FIRST_URL,
+        onPresentationRequest: () => ({
+          verifiablePresentation: undefined, signOptions: {suite: 'x'}
+        }),
+        ...h
+      })).rejects.toThrow(/No presentation was produced/);
+    });
+
     it('ignores a request on the terminal step', async () => {
       let called = false;
       const h = harness({
