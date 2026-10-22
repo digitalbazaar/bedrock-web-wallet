@@ -3,28 +3,9 @@
 ## 15.12.0 - 20xx-xx-xx
 
 ### Added
-- Add `completeInteractionChain()`, which runs every exchange an interaction
-  resolves into and returns
-  `{credentials, exchangeCount, redirectUrl, canceled}`. An exchange
-  continues the chain by finishing with a `redirectUrl` that is an
-  interaction URL (its query has `iuv=1`); any other `redirectUrl` is
-  returned unfollowed. No follow-on exchange starts until the caller's
-  `onBeforeContinue` resolves to `true`, so the caller can give the holder
-  the chance to cancel a chain of automated redirects; when it does not, the
-  chain returns what it collected with `canceled: true` and the declined URL
-  as `redirectUrl`. Both the starting URL and every follow-on URL must use
-  `https:`, and a relative follow-on URL is resolved against the exchange
-  that named it. A step that asks for a presentation is answered by
-  `onPresentationRequest`, which may resolve to
-  `{verifiablePresentation, signOptions}` to sign that step's presentation
-  with its own `signOptions`; a step that neither finishes nor asks for a
-  presentation is refused. `onLegComplete` runs after each exchange, before
-  `onBeforeContinue`, so a credential can be stored before the next leg asks
-  the holder to present it. The callbacks receive the current leg's
-  interaction URL and origin, which are self-asserted by whatever named them
-  and are reported rather than trusted. The caller supplies
-  `createInteraction` and `startExchange`, which build an interaction from a
-  URL and start an exchange for it.
+- Add `completeInteractionChain()` to run an interaction's chained exchanges,
+  following a final `redirectUrl` only when it has `iuv=1` and asking the
+  caller's `onBeforeContinue` before each follow-on exchange.
 - Export `ClientInteraction` from the `exchanges` namespace, so a caller can
   build an interaction from an interaction URL.
 
@@ -34,10 +15,9 @@
   passed `credentials` threw.
 
 ### Changed
-- `exchanges.start()` no longer requires a CHAPI event. An exchange started
-  from an interaction URL has no caller awaiting a CHAPI response, so its
-  result is logged rather than bound to one, and `start()` now rejects a call
-  that names neither an event nor an interaction.
+- `exchanges.start()` called with an `interaction` and no CHAPI event now
+  logs a failed exchange's result (name and status only) instead of leaving
+  the rejection unhandled.
 
 ## 15.11.0 - 2026-10-29
 
