@@ -214,12 +214,16 @@ The package's main export (`@bedrock/web-wallet`) exposes:
   exchanges (`maxExchanges`) and the number of steps within one (`maxSteps`)
   are both bounded. Supply `onPresentationRequest` to answer a step that asks
   for a presentation, and `onLegComplete` to store what a leg delivered before
-  the next one starts.
+  the next one starts. The caller supplies `createInteraction`, which builds
+  an interaction (such as an `exchanges.ClientInteraction`) from
+  `{interactionUrl}`, and `startExchange`, which starts an exchange for
+  `{interaction}` (such as with `exchanges.start()`).
 
 ### Namespaces
 
 - `exchanges` — `start({event})` or `start({interaction})` selects and
-  starts a credential exchange.
+  starts a credential exchange; `ClientInteraction` builds an interaction from
+  an interaction URL.
 - `presentations` — `sign()`, `match()`, and `pruneCredentialProofs()`.
 - `helpers` — profile and capability helpers (`createProfile`,
   `createCapabilities`, NFC payload helpers, etc.).

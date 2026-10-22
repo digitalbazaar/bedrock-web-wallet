@@ -242,6 +242,18 @@ describe('completeInteractionChain', () => {
       await expect(completeInteractionChain({...harness({})}))
         .rejects.toThrow(/interactionUrl/);
     });
+
+    it.each(['createInteraction', 'startExchange'])(
+      'requires the caller to supply `%s`', async name => {
+        const h = harness({
+          [FIRST_URL]: [{value: presentationOf(FIRST_VC), done: true}]
+        });
+        delete h[name];
+        await expect(completeInteractionChain({
+          interactionUrl: FIRST_URL, ...h
+        })).rejects.toThrow(new RegExp(`"${name}" must be a function`));
+        expect(h.exchanges).toHaveLength(0);
+      });
   });
 
   describe('bounds', () => {
