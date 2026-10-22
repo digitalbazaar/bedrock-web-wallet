@@ -10,6 +10,9 @@ const FIRST_URL = 'https://first.example/exchanges/1';
 const SECOND_URL = 'https://second.example/interactions/2?iuv=1';
 const LANDING_URL = 'https://second.example/done';
 
+const VPR = {query: [{type: 'QueryByExample'}]};
+const ANSWER = {type: 'VerifiablePresentation'};
+
 const FIRST_VC = {
   type: ['VerifiableCredential', 'ExampleCredential'],
   credentialSubject: {id: 'urn:uuid:first'}
@@ -63,7 +66,8 @@ function harness(scriptsByUrl) {
       const exchange = exchangeReturning(steps);
       exchanges.push(exchange);
       return exchange;
-    }
+    },
+    onBeforeContinue: () => true
   };
 }
 
@@ -102,13 +106,18 @@ describe('completeInteractionChain', () => {
   it('keeps stepping one exchange until it reports done', async () => {
     const h = harness({
       [FIRST_URL]: [
-        {value: {}, done: false},
-        {value: presentationOf(FIRST_VC), done: false},
+        {value: {verifiablePresentationRequest: VPR}, done: false},
+        {
+          value: {
+            ...presentationOf(FIRST_VC), verifiablePresentationRequest: VPR
+          },
+          done: false
+        },
         {value: {}, done: true}
       ]
     });
     const result = await completeInteractionChain({
-      interactionUrl: FIRST_URL, ...h
+      interactionUrl: FIRST_URL, onPresentationRequest: () => ANSWER, ...h
     });
     // every scripted step is consumed, including the terminal one
     expect(h.exchanges[0].calls).toHaveLength(3);
@@ -145,10 +154,26 @@ describe('completeInteractionChain', () => {
     await expect(completeInteractionChain({
       interactionUrl: FIRST_URL,
       createInteraction: h.createInteraction,
-      startExchange
+      startExchange,
+      onBeforeContinue: h.onBeforeContinue
     })).rejects.toThrow('step failed');
     expect(exchanges[0].closed).toEqual({error: boom});
   });
+
+  it('refuses a step that neither finishes nor asks for a presentation',
+    async () => {
+      const h = harness({
+        [FIRST_URL]: [
+          {value: presentationOf(FIRST_VC), done: false},
+          {value: presentationOf(FIRST_VC), done: true}
+        ]
+      });
+      await expect(completeInteractionChain({
+        interactionUrl: FIRST_URL, onPresentationRequest: () => ANSWER, ...h
+      })).rejects.toThrow(/neither finished nor asked for a presentation/);
+      expect(h.exchanges[0].calls).toHaveLength(1);
+      expect(h.exchanges[0].closed.error).toBeInstanceOf(Error);
+    });
 
   describe('chaining', () => {
     it('follows a `redirectUrl` that is an interaction URL', async () => {
@@ -249,7 +274,7 @@ describe('completeInteractionChain', () => {
         .rejects.toThrow(/interactionUrl/);
     });
 
-    it.each(['createInteraction', 'startExchange'])(
+    it.each(['createInteraction', 'startExchange', 'onBeforeContinue'])(
       'requires the caller to supply `%s`', async name => {
         const h = harness({
           [FIRST_URL]: [{value: presentationOf(FIRST_VC), done: true}]
@@ -262,50 +287,108 @@ describe('completeInteractionChain', () => {
       });
   });
 
-  describe('bounds', () => {
-    it('stops after `maxExchanges` and takes exactly that many', async () => {
-      // an exchange that always names another one
-      const h = {
-        visited: [],
-        createInteraction({interactionUrl}) {
-          h.visited.push(String(interactionUrl));
-          return {interactionUrl: String(interactionUrl)};
-        },
-        startExchange() {
-          return exchangeReturning([
-            {value: {redirectUrl: `${FIRST_URL}?iuv=1`}, done: true}
-          ]);
-        }
-      };
-      await expect(completeInteractionChain({
-        interactionUrl: FIRST_URL, maxExchanges: 3,
-        createInteraction: h.createInteraction,
-        startExchange: h.startExchange
-      })).rejects.toThrow(/maxExchanges/);
-      expect(h.visited).toHaveLength(3);
-    });
+  describe('onBeforeContinue', () => {
+    const CHAINED = {
+      [FIRST_URL]: [{
+        value: {...presentationOf(FIRST_VC), redirectUrl: SECOND_URL},
+        done: true
+      }],
+      [SECOND_URL]: [{value: presentationOf(SECOND_VC), done: true}]
+    };
 
-    it('stops after `maxSteps` and takes exactly that many', async () => {
-      const h = harness({
-        // never reports done
-        [FIRST_URL]: Array.from({length: 50}, () => ({value: {}, done: false}))
+    it('is asked before each follow-on exchange, not the first', async () => {
+      const seen = [];
+      const h = harness(CHAINED);
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...h,
+        onBeforeContinue(args) {
+          seen.push({visited: [...h.visited], ...args});
+          return true;
+        }
       });
-      await expect(completeInteractionChain({
-        interactionUrl: FIRST_URL, maxSteps: 4, ...h
-      })).rejects.toThrow(/maxSteps/);
-      expect(h.exchanges[0].calls).toHaveLength(4);
+      expect(seen).toEqual([{
+        visited: [FIRST_URL],
+        interactionUrl: SECOND_URL,
+        origin: 'https://second.example',
+        exchangeCount: 1,
+        credentials: [FIRST_VC]
+      }]);
+      expect(result.canceled).toBe(false);
     });
 
     it.each([
-      ['maxExchanges', {maxExchanges: 0}],
-      ['maxExchanges', {maxExchanges: 1.5}],
-      ['maxExchanges', {maxExchanges: 2 ** 54}],
-      ['maxSteps', {maxSteps: 0}],
-      ['maxSteps', {maxSteps: 2 ** 54}]
-    ])('refuses an unusable %s bound', async (name, bound) => {
-      await expect(completeInteractionChain({
-        interactionUrl: FIRST_URL, ...bound, ...harness({})
-      })).rejects.toThrow(new RegExp(name));
+      ['false', () => false],
+      ['a promise of false', async () => false],
+      ['nothing', () => undefined]
+    ])('stops the chain when it answers %s', async (_, onBeforeContinue) => {
+      const h = harness(CHAINED);
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...h, onBeforeContinue
+      });
+      expect(h.visited).toEqual([FIRST_URL]);
+      expect(result).toEqual({
+        credentials: [FIRST_VC],
+        exchangeCount: 1,
+        redirectUrl: SECOND_URL,
+        canceled: true
+      });
+    });
+
+    it('lets the caller stop a chain that never ends', async () => {
+      const LOOP_URL = `${FIRST_URL}?iuv=1`;
+      const counts = [];
+      const h = harness({});
+      h.startExchange = () => {
+        if(h.visited.length > 10) {
+          throw new Error('the chain was never stopped');
+        }
+        return exchangeReturning([
+          {value: {redirectUrl: LOOP_URL}, done: true}
+        ]);
+      };
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...h,
+        onBeforeContinue({exchangeCount}) {
+          counts.push(exchangeCount);
+          return exchangeCount < 3;
+        }
+      });
+      expect(counts).toEqual([1, 2, 3]);
+      expect(h.visited).toHaveLength(3);
+      expect(result.exchangeCount).toBe(3);
+      expect(result.canceled).toBe(true);
+    });
+
+    it('runs after the leg is reported', async () => {
+      const order = [];
+      await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...harness(CHAINED),
+        onLegComplete({interactionUrl}) {
+          order.push(`leg:${interactionUrl}`);
+        },
+        onBeforeContinue({interactionUrl}) {
+          order.push(`continue:${interactionUrl}`);
+          return true;
+        }
+      });
+      expect(order).toEqual([
+        `leg:${FIRST_URL}`, `continue:${SECOND_URL}`, `leg:${SECOND_URL}`
+      ]);
+    });
+
+    it('is handed credentials it cannot mutate', async () => {
+      const handed = [];
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...harness(CHAINED),
+        onBeforeContinue({credentials}) {
+          handed.push(credentials);
+          credentials[0].credentialSubject.id = 'urn:uuid:tampered';
+          credentials.push('mutated');
+          return true;
+        }
+      });
+      expect(handed).toHaveLength(1);
+      expect(result.credentials).toEqual([FIRST_VC, SECOND_VC]);
     });
   });
 
@@ -314,16 +397,17 @@ describe('completeInteractionChain', () => {
       const signOptions = {suite: 'test-suite'};
       const h = harness({
         [FIRST_URL]: [
-          {value: {}, done: false},
+          {value: {verifiablePresentationRequest: VPR}, done: false},
           {value: {redirectUrl: SECOND_URL}, done: true}
         ],
         [SECOND_URL]: [
-          {value: {}, done: false},
+          {value: {verifiablePresentationRequest: VPR}, done: false},
           {value: presentationOf(SECOND_VC), done: true}
         ]
       });
       await completeInteractionChain({
-        interactionUrl: FIRST_URL, signOptions, ...h
+        interactionUrl: FIRST_URL, signOptions,
+        onPresentationRequest: () => ANSWER, ...h
       });
       const seen = h.exchanges.flatMap(e => e.calls);
       expect(seen).toHaveLength(4);
@@ -334,8 +418,6 @@ describe('completeInteractionChain', () => {
   });
 
   describe('presentation requests', () => {
-    const VPR = {query: [{type: 'QueryByExample'}]};
-
     it('hands the handler the request, origin and leg URL', async () => {
       const seen = [];
       const h = harness({
@@ -406,16 +488,17 @@ describe('completeInteractionChain', () => {
       const h = harness({
         [FIRST_URL]: [
           {value: {verifiablePresentationRequest: VPR}, done: false},
-          {value: {}, done: false},
+          {value: {verifiablePresentationRequest: VPR}, done: false},
           {value: presentationOf(FIRST_VC), done: true}
         ]
       });
+      const answers = [
+        {verifiablePresentation: ANSWER, signOptions: answerSignOptions},
+        ANSWER
+      ];
       await completeInteractionChain({
         interactionUrl: FIRST_URL, signOptions: chainSignOptions,
-        onPresentationRequest: () => ({
-          verifiablePresentation: {type: 'VerifiablePresentation'},
-          signOptions: answerSignOptions
-        }),
+        onPresentationRequest: () => answers.shift(),
         ...h
       });
       expect(h.exchanges[0].calls.map(call => call.signOptions)).toEqual(
@@ -484,11 +567,14 @@ describe('completeInteractionChain', () => {
   });
 
   it('gives callbacks credentials a callee cannot mutate', async () => {
-    const VPR = {query: [{type: 'QueryByExample'}]};
     const h = harness({
       [FIRST_URL]: [
-        {value: presentationOf(FIRST_VC), done: false},
-        {value: {verifiablePresentationRequest: VPR}, done: false},
+        {
+          value: {
+            ...presentationOf(FIRST_VC), verifiablePresentationRequest: VPR
+          },
+          done: false
+        },
         {value: {}, done: true}
       ]
     });
@@ -533,6 +619,7 @@ describe('completeInteractionChain', () => {
         startExchange({interaction}) {
           return exchangeReturning(scripts[interaction.interactionUrl]);
         },
+        onBeforeContinue: () => true,
         async onLegComplete({nextInteractionUrl}) {
           if(!nextInteractionUrl) {
             return;

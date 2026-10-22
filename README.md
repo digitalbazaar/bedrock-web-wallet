@@ -207,17 +207,24 @@ The package's main export (`@bedrock/web-wallet`) exposes:
 
 - `completeInteractionChain({interactionUrl, ...})` — runs every exchange an
   interaction resolves into and returns
-  `{credentials, exchangeCount, redirectUrl}`. Both the starting URL and any
-  follow-on URL must use `https:`. An exchange continues the chain by
-  finishing with a `redirectUrl` that is an interaction URL (its query has
-  `iuv=1`); any other `redirectUrl` is returned unfollowed. The number of
-  exchanges (`maxExchanges`) and the number of steps within one (`maxSteps`)
-  are both bounded. Supply `onPresentationRequest` to answer a step that asks
-  for a presentation, and `onLegComplete` to store what a leg delivered before
-  the next one starts. The caller supplies `createInteraction`, which builds
-  an interaction (such as an `exchanges.ClientInteraction`) from
-  `{interactionUrl}`, and `startExchange`, which starts an exchange for
-  `{interaction}` (such as with `exchanges.start()`).
+  `{credentials, exchangeCount, redirectUrl, canceled}`. Both the starting
+  URL and any follow-on URL must use `https:`. An exchange continues the
+  chain by finishing with a `redirectUrl` that is an interaction URL (its
+  query has `iuv=1`); any other `redirectUrl` is returned unfollowed. The
+  caller supplies:
+  - `createInteraction({interactionUrl})` — builds an interaction, such as an
+    `exchanges.ClientInteraction`.
+  - `startExchange({interaction})` — starts an exchange, such as with
+    `exchanges.start()`.
+  - `onBeforeContinue({interactionUrl, origin, exchangeCount, credentials})`
+    — called before each follow-on exchange, not the first; the chain
+    continues only when it resolves to `true`. Otherwise the chain returns
+    with `canceled: true` and the declined URL as `redirectUrl`.
+  - `onPresentationRequest` (optional) — answers a step that asks for a
+    presentation, with the presentation or with
+    `{verifiablePresentation, signOptions}`.
+  - `onLegComplete` (optional) — stores what a leg delivered before the next
+    one starts.
 
 ### Namespaces
 
