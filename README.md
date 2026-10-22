@@ -208,9 +208,9 @@ The package's main export (`@bedrock/web-wallet`) exposes:
 - `completeInteractionChain({interactionUrl, ...})` — runs every exchange an
   interaction resolves into and returns
   `{credentials, exchangeCount, redirectUrl}`. Both the starting URL and any
-  follow-on URL must use `https:`. An exchange continues the chain by naming
-  the next one in `nextInteractionUrl`; a `redirectUrl` is reported back
-  rather than followed, unless `followRedirectUrl` is set. The number of
+  follow-on URL must use `https:`. An exchange continues the chain by
+  finishing with a `redirectUrl` that is an interaction URL (its query has
+  `iuv=1`); any other `redirectUrl` is returned unfollowed. The number of
   exchanges (`maxExchanges`) and the number of steps within one (`maxSteps`)
   are both bounded. Supply `onPresentationRequest` to answer a step that asks
   for a presentation, and `onLegComplete` to store what a leg delivered before

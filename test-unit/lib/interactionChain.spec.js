@@ -7,7 +7,8 @@ import {
 } from '../../lib/exchanges/interactionChain.js';
 
 const FIRST_URL = 'https://first.example/exchanges/1';
-const SECOND_URL = 'https://second.example/exchanges/2';
+const SECOND_URL = 'https://second.example/interactions/2?iuv=1';
+const LANDING_URL = 'https://second.example/done';
 
 const FIRST_VC = {
   type: ['VerifiableCredential', 'ExampleCredential'],
@@ -150,7 +151,45 @@ describe('completeInteractionChain', () => {
   });
 
   describe('chaining', () => {
-    it('follows `nextInteractionUrl` to the next exchange', async () => {
+    it('follows a `redirectUrl` that is an interaction URL', async () => {
+      const h = harness({
+        [FIRST_URL]: [{
+          value: {...presentationOf(FIRST_VC), redirectUrl: SECOND_URL},
+          done: true
+        }],
+        [SECOND_URL]: [{value: presentationOf(SECOND_VC), done: true}]
+      });
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...h
+      });
+      expect(h.visited).toEqual([FIRST_URL, SECOND_URL]);
+      expect(result.credentials).toEqual([FIRST_VC, SECOND_VC]);
+      expect(result.exchangeCount).toBe(2);
+      expect(result.redirectUrl).toBe(null);
+    });
+
+    it.each([
+      ['has no `iuv`', LANDING_URL],
+      ['has `iuv` other than 1', 'https://second.example/interactions/2?iuv=2'],
+      ['has `iuv=1` only in its fragment',
+        'https://second.example/interactions/2#iuv=1'],
+      ['is not https', 'http://second.example/done']
+    ])('returns a `redirectUrl` that %s unfollowed', async (_, redirectUrl) => {
+      const h = harness({
+        [FIRST_URL]: [{
+          value: {...presentationOf(FIRST_VC), redirectUrl},
+          done: true
+        }]
+      });
+      const result = await completeInteractionChain({
+        interactionUrl: FIRST_URL, ...h
+      });
+      expect(h.visited).toEqual([FIRST_URL]);
+      expect(result.credentials).toEqual([FIRST_VC]);
+      expect(result.redirectUrl).toBe(redirectUrl);
+    });
+
+    it('does not follow `nextInteractionUrl`', async () => {
       const h = harness({
         [FIRST_URL]: [{
           value: {
@@ -163,50 +202,17 @@ describe('completeInteractionChain', () => {
       const result = await completeInteractionChain({
         interactionUrl: FIRST_URL, ...h
       });
-      expect(h.visited).toEqual([FIRST_URL, SECOND_URL]);
-      expect(result.credentials).toEqual([FIRST_VC, SECOND_VC]);
-      expect(result.exchangeCount).toBe(2);
-    });
-
-    it('does NOT treat `redirectUrl` as the next exchange', async () => {
-      const h = harness({
-        [FIRST_URL]: [{
-          value: {...presentationOf(FIRST_VC), redirectUrl: SECOND_URL},
-          done: true
-        }],
-        [SECOND_URL]: [{value: presentationOf(SECOND_VC), done: true}]
-      });
-      const result = await completeInteractionChain({
-        interactionUrl: FIRST_URL, ...h
-      });
-      // the protocols' own post-exchange redirect is reported, not followed
       expect(h.visited).toEqual([FIRST_URL]);
       expect(result.credentials).toEqual([FIRST_VC]);
-      expect(result.redirectUrl).toBe(SECOND_URL);
-    });
-
-    it('follows `redirectUrl` when the caller opts in', async () => {
-      const h = harness({
-        [FIRST_URL]: [{
-          value: {...presentationOf(FIRST_VC), redirectUrl: SECOND_URL},
-          done: true
-        }],
-        [SECOND_URL]: [{value: presentationOf(SECOND_VC), done: true}]
-      });
-      const result = await completeInteractionChain({
-        interactionUrl: FIRST_URL, followRedirectUrl: true, ...h
-      });
-      expect(h.visited).toEqual([FIRST_URL, SECOND_URL]);
-      expect(result.credentials).toEqual([FIRST_VC, SECOND_VC]);
     });
 
     it('resolves a relative follow-on URL against the leg it came from',
       async () => {
         const h = harness({
           [FIRST_URL]: [{
-            value: {nextInteractionUrl: '/exchanges/9'}, done: true
+            value: {redirectUrl: '/interactions/9?iuv=1'}, done: true
           }],
-          'https://first.example/exchanges/9': [
+          'https://first.example/interactions/9?iuv=1': [
             {value: presentationOf(SECOND_VC), done: true}
           ]
         });
@@ -214,15 +220,15 @@ describe('completeInteractionChain', () => {
           interactionUrl: FIRST_URL, ...h
         });
         expect(h.visited).toEqual([
-          FIRST_URL, 'https://first.example/exchanges/9'
+          FIRST_URL, 'https://first.example/interactions/9?iuv=1'
         ]);
         expect(result.credentials).toEqual([SECOND_VC]);
       });
 
-    it('refuses a follow-on URL that is not https', async () => {
+    it('refuses an interaction URL redirect that is not https', async () => {
       const h = harness({
         [FIRST_URL]: [{
-          value: {nextInteractionUrl: 'http://second.example/exchanges/2'},
+          value: {redirectUrl: 'http://second.example/interactions/2?iuv=1'},
           done: true
         }]
       });
@@ -267,7 +273,7 @@ describe('completeInteractionChain', () => {
         },
         startExchange() {
           return exchangeReturning([
-            {value: {nextInteractionUrl: FIRST_URL}, done: true}
+            {value: {redirectUrl: `${FIRST_URL}?iuv=1`}, done: true}
           ]);
         }
       };
@@ -309,7 +315,7 @@ describe('completeInteractionChain', () => {
       const h = harness({
         [FIRST_URL]: [
           {value: {}, done: false},
-          {value: {nextInteractionUrl: SECOND_URL}, done: true}
+          {value: {redirectUrl: SECOND_URL}, done: true}
         ],
         [SECOND_URL]: [
           {value: {}, done: false},
@@ -512,7 +518,7 @@ describe('completeInteractionChain', () => {
       const scripts = {
         [FIRST_URL]: [{
           value: {
-            ...presentationOf(FIRST_VC), nextInteractionUrl: SECOND_URL
+            ...presentationOf(FIRST_VC), redirectUrl: SECOND_URL
           },
           done: true
         }],
@@ -554,7 +560,7 @@ describe('completeInteractionChain', () => {
         const h = harness({
           [FIRST_URL]: [{
             value: {
-              ...presentationOf(FIRST_VC), nextInteractionUrl: SECOND_URL
+              ...presentationOf(FIRST_VC), redirectUrl: SECOND_URL
             },
             done: true
           }],

@@ -5,12 +5,9 @@
 ### Added
 - Add `completeInteractionChain()`, which runs every exchange an interaction
   resolves into and returns `{credentials, exchangeCount, redirectUrl}`. An
-  exchange continues the chain by naming the next one in
-  `nextInteractionUrl`, which the VC-API exchange now carries through from
-  the exchange response; a `redirectUrl` is reported back rather than
-  followed, because both built-in protocols already use that field for the
-  protocol's own post-exchange browser redirect. Set `followRedirectUrl` to
-  chain through it anyway. Both the starting URL and every follow-on URL must
+  exchange continues the chain by finishing with a `redirectUrl` that is an
+  interaction URL (its query has `iuv=1`); any other `redirectUrl` is
+  returned unfollowed. Both the starting URL and every follow-on URL must
   use `https:`, and a relative follow-on URL is resolved against the exchange
   that named it. The number of exchanges (`maxExchanges`) and the number of
   steps within one (`maxSteps`) are both bounded. A step that asks for a
