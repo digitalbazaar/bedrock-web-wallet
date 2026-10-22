@@ -19,6 +19,10 @@
   be stored before the next leg asks the holder to present it. Both callbacks
   receive the current leg's interaction URL and origin, which are
   self-asserted by whatever named them and are reported rather than trusted.
+  The caller supplies `createInteraction` and `startExchange`, which build an
+  interaction from a URL and start an exchange for it.
+- Export `ClientInteraction` from the `exchanges` namespace, so a caller can
+  build an interaction from an interaction URL.
 
 ### Fixed
 - Accept `credentials` in `CredentialStore.add()` again. The `records` check
