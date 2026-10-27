@@ -94,3 +94,20 @@ describe('exchanges.start()', function() {
       'The interaction is not compatible with this wallet.');
   });
 });
+
+describe('exchanges.isInteractionUrl()', function() {
+  it('should accept an "https:" URL with "iuv=1".', async () => {
+    exchanges.isInteractionUrl(interactionUrl('z3')).should.equal(true);
+  });
+  it('should reject a URL without "iuv=1".', async () => {
+    exchanges.isInteractionUrl(
+      `${window.location.origin}/test/interactions/z3`).should.equal(false);
+  });
+  it('should reject a URL that is not "https:".', async () => {
+    exchanges.isInteractionUrl(
+      'http://localhost/test/interactions/z3?iuv=1').should.equal(false);
+  });
+  it('should reject a value that is not a URL.', async () => {
+    exchanges.isInteractionUrl('not a URL').should.equal(false);
+  });
+});
