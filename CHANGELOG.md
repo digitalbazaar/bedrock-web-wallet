@@ -1,5 +1,14 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.11.0 - 2026-10-xx
+
+### Added
+- Add `exchanges.createClientInteractionFromUrl()` to create a
+  `ClientInteraction` from an interaction URL that was not received through a
+  CHAPI event (e.g., from a QR code or another exchange).
+- Allow `exchanges.start()` to also be called with only an `interaction`,
+  without a CHAPI event.
+
 ## 15.10.1 - 2026-08-31
 
 ### Fixed
