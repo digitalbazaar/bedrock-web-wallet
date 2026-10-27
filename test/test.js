@@ -68,6 +68,28 @@ bedrock.events.on('bedrock.init', async () => {
   handlers.setUseHandler({handler: ({meter} = {}) => ({meter})});
 });
 
+// mock interaction and VC-API exchange endpoints for the `exchanges` tests
+bedrock.events.on('bedrock-express.configure.routes', app => {
+  const {baseUri, host} = bedrock.config.server;
+  app.get('/test/interactions/:id', (req, res) => {
+    const {id} = req.params;
+    // offers no protocol this wallet supports
+    if(id === 'unsupported') {
+      return res.json({protocols: {}});
+    }
+    res.json({protocols: {vcapi: `${baseUri}/test/exchanges/${id}`}});
+  });
+  app.post('/test/exchanges/:id', (req, res) => {
+    res.json({
+      verifiablePresentationRequest: {
+        query: {type: 'DIDAuthentication'},
+        challenge: req.params.id,
+        domain: host
+      }
+    });
+  });
+});
+
 passport.authenticate = (strategyName, options, callback) => {
   // eslint-disable-next-line no-unused-vars
   return async function(req, res, next) {
