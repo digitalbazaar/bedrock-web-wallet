@@ -9,9 +9,9 @@ const {exchanges} = webWallet;
 const interactionUrl = id =>
   `${window.location.origin}/test/interactions/${id}?iuv=1`;
 
-describe('exchanges.createClientInteractionFromUrl()', function() {
+describe('exchanges.createClientInteraction({interactionUrl})', function() {
   it('should create an interaction from an interaction URL.', async () => {
-    const interaction = await exchanges.createClientInteractionFromUrl({
+    const interaction = await exchanges.createClientInteraction({
       interactionUrl: interactionUrl('z1')
     });
     interaction.origin.should.equal(window.location.origin);
@@ -22,7 +22,7 @@ describe('exchanges.createClientInteractionFromUrl()', function() {
   it('should fail when the URL has no "iuv=1".', async () => {
     let err;
     try {
-      await exchanges.createClientInteractionFromUrl({
+      await exchanges.createClientInteraction({
         interactionUrl: `${window.location.origin}/test/interactions/z1`
       });
     } catch(e) {
@@ -34,7 +34,7 @@ describe('exchanges.createClientInteractionFromUrl()', function() {
   it('should fail when the URL is not "https:".', async () => {
     let err;
     try {
-      await exchanges.createClientInteractionFromUrl({
+      await exchanges.createClientInteraction({
         interactionUrl: 'http://localhost/test/interactions/z1?iuv=1'
       });
     } catch(e) {
@@ -46,7 +46,7 @@ describe('exchanges.createClientInteractionFromUrl()', function() {
   it('should fail when the protocols cannot be fetched.', async () => {
     let err;
     try {
-      await exchanges.createClientInteractionFromUrl({
+      await exchanges.createClientInteraction({
         interactionUrl: `${window.location.origin}/test/not-found?iuv=1`
       });
     } catch(e) {
@@ -54,6 +54,28 @@ describe('exchanges.createClientInteractionFromUrl()', function() {
     }
     should.exist(err);
     err.name.should.equal('DataError');
+  });
+  it('should fail with both an event and an interaction URL.', async () => {
+    let err;
+    try {
+      await exchanges.createClientInteraction({
+        event: {}, interactionUrl: interactionUrl('z1')
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('TypeError');
+  });
+  it('should fail without an event or an interaction URL.', async () => {
+    let err;
+    try {
+      await exchanges.createClientInteraction();
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('TypeError');
   });
 });
 
@@ -69,7 +91,7 @@ describe('exchanges.start()', function() {
     err.name.should.equal('TypeError');
   });
   it('should start a VC-API exchange without a CHAPI event.', async () => {
-    const interaction = await exchanges.createClientInteractionFromUrl({
+    const interaction = await exchanges.createClientInteraction({
       interactionUrl: interactionUrl('z2')
     });
     const exchange = await exchanges.start({interaction});
@@ -80,7 +102,7 @@ describe('exchanges.start()', function() {
     value.verifiablePresentationRequest.challenge.should.equal('z2');
   });
   it('should fail when no protocol is supported.', async () => {
-    const interaction = await exchanges.createClientInteractionFromUrl({
+    const interaction = await exchanges.createClientInteraction({
       interactionUrl: interactionUrl('unsupported')
     });
     let err;
