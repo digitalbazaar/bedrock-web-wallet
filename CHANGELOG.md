@@ -3,9 +3,9 @@
 ## 15.11.0 - 2026-10-xx
 
 ### Added
-- Add `exchanges.createClientInteractionFromUrl()` to create a
-  `ClientInteraction` from an interaction URL that was not received through a
-  CHAPI event (e.g., from a QR code or another exchange).
+- Allow `exchanges.createClientInteraction()` to take an `interactionUrl`
+  instead of a CHAPI event, for an interaction URL that was not received
+  through CHAPI (e.g., from a QR code or another exchange).
 - Allow `exchanges.start()` to also be called with only an `interaction`,
   without a CHAPI event.
 - Add `config.wallet.credentialProviders` and
