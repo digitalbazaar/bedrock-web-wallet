@@ -11,7 +11,7 @@
 - Add `config.wallet.credentialProviders` and
   `presentations.findCredentialProviders()` so apps can register where to
   obtain credentials that a VPR query does not match.
-- Add `exchanges.isInteractionUrl()` to tell whether a `redirectUrl`
+- Add `exchanges.isInteractionUrl({url})` to tell whether a `redirectUrl`
   continues the interaction at a new exchange.
 
 ## 15.10.1 - 2026-08-31
