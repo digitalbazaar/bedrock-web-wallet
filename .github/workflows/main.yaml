@@ -20,7 +20,8 @@ jobs:
       run: npm run lint
   test-karma:
     needs: [lint]
-    runs-on: ubuntu-latest
+    # TODO: back to ubuntu-latest once its mongo service container is fixed
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     services:
       mongodb:
@@ -46,7 +47,8 @@ jobs:
         npm test
   coverage:
     needs: [test-karma]
-    runs-on: ubuntu-latest
+    # TODO: back to ubuntu-latest once its mongo service container is fixed
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     services:
       mongodb:
