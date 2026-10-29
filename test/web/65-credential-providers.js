@@ -2,7 +2,6 @@
  * Copyright (c) 2026 Digital Bazaar, Inc.
  */
 import * as webWallet from '@bedrock/web-wallet';
-import {config} from '@bedrock/web';
 
 const {presentations} = webWallet;
 
@@ -35,14 +34,48 @@ function queryByExample(type) {
   };
 }
 
+describe('addCredentialProvider()', function() {
+  afterEach(() => {
+    webWallet.removeCredentialProvider({credentialType: 'ExampleCredential'});
+  });
+
+  it('should reject a provider without "getInteractionUrl".', async () => {
+    let err;
+    try {
+      webWallet.addCredentialProvider({
+        credentialType: 'ExampleCredential', provider: {label: 'Get'}
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('TypeError');
+  });
+  it('should reject a second provider for the same type.', async () => {
+    webWallet.addCredentialProvider({
+      credentialType: 'ExampleCredential', provider
+    });
+    let err;
+    try {
+      webWallet.addCredentialProvider({
+        credentialType: 'ExampleCredential', provider
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+  });
+});
+
 describe('presentations.findCredentialProviders()', function() {
-  let originalProviders;
   before(() => {
-    originalProviders = config.wallet.credentialProviders;
-    config.wallet.credentialProviders = {ExampleCredential: provider};
+    webWallet.addCredentialProvider({
+      credentialType: 'ExampleCredential', provider
+    });
   });
   after(() => {
-    config.wallet.credentialProviders = originalProviders;
+    webWallet.removeCredentialProvider({credentialType: 'ExampleCredential'});
   });
 
   it('should find a provider for an unmatched query.', async () => {

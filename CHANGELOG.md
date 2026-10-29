@@ -8,7 +8,7 @@
   through CHAPI (e.g., from a QR code or another exchange).
 - Allow `exchanges.start()` to also be called with only an `interaction`,
   without a CHAPI event.
-- Add `config.wallet.credentialProviders` and
+- Add `addCredentialProvider()`, `removeCredentialProvider()` and
   `presentations.findCredentialProviders()` so apps can register where to
   obtain credentials that a VPR query does not match.
 - Add `exchanges.isInteractionUrl({url})` to tell whether a `redirectUrl`
