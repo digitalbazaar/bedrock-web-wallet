@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.11.0 - 2026-10-xx
+## 15.11.0 - 2026-10-29
 
 ### Added
 - Allow `exchanges.createClientInteraction()` to take an `interactionUrl`
