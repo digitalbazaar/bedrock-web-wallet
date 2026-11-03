@@ -1,0 +1,14 @@
+{
+  "name": "bedrock-web-wallet-test-unit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Unit tests for @bedrock/web-wallet. Kept out of the root package so its dependencies never reach the karma build, which resolves the root node_modules through a `file:..` symlink.",
+  "scripts": {
+    "test": "vitest run",
+    "watch": "vitest"
+  },
+  "dependencies": {
+    "vitest": "^4.1.11"
+  }
+}

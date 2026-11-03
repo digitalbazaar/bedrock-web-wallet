@@ -135,8 +135,9 @@ await credentialStore.delete({id: credentialId});
 
 ### Run a credential exchange
 
-Exchanges are started from a [CHAPI](https://chapi.io/) event. The exchange
-protocol is auto-selected from the configured preference order. The returned
+Exchanges are started from a [CHAPI](https://chapi.io/) event, or from an
+interaction URL a coordinator handed the wallet. The exchange protocol is
+auto-selected from the configured preference order. The returned
 `Exchange` is advanced by calling `next()`, which works like an async iterator
 step: each call resolves to `{value, done}`.
 
@@ -202,9 +203,34 @@ The package's main export (`@bedrock/web-wallet`) exposes:
 - `getProfileEdvClient({profileId, referenceIdPrefix})` — get (and cache) an
   EDV client for a profile.
 
+### Interaction chains
+
+- `completeInteractionChain({interactionUrl, ...})` — runs every exchange an
+  interaction resolves into and returns
+  `{credentials, exchangeCount, redirectUrl, canceled}`. Both the starting
+  URL and any follow-on URL must use `https:`. An exchange continues the
+  chain by finishing with a `redirectUrl` that is an interaction URL (its
+  query has `iuv=1`); any other `redirectUrl` is returned unfollowed. The
+  caller supplies:
+  - `createInteraction({interactionUrl})` — builds an interaction, such as an
+    `exchanges.ClientInteraction`.
+  - `startExchange({interaction})` — starts an exchange, such as with
+    `exchanges.start()`.
+  - `onBeforeContinue({interactionUrl, origin, exchangeCount, credentials})`
+    — called before each follow-on exchange, not the first; the chain
+    continues only when it resolves to `true`. Otherwise the chain returns
+    with `canceled: true` and the declined URL as `redirectUrl`.
+  - `onPresentationRequest` (optional) — answers a step that asks for a
+    presentation, with the presentation or with
+    `{verifiablePresentation, signOptions}`.
+  - `onLegComplete` (optional) — stores what a leg delivered before the next
+    one starts.
+
 ### Namespaces
 
-- `exchanges` — `start({event})` selects and starts a credential exchange.
+- `exchanges` — `start({event})` or `start({interaction})` selects and
+  starts a credential exchange; `ClientInteraction` builds an interaction from
+  an interaction URL.
 - `presentations` — `sign()`, `match()`, and `pruneCredentialProofs()`.
 - `helpers` — profile and capability helpers (`createProfile`,
   `createCapabilities`, NFC payload helpers, etc.).

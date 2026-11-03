@@ -1,5 +1,24 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.12.0 - 20xx-xx-xx
+
+### Added
+- Add `completeInteractionChain()` to run an interaction's chained exchanges,
+  following a final `redirectUrl` only when it has `iuv=1` and asking the
+  caller's `onBeforeContinue` before each follow-on exchange.
+- Export `ClientInteraction` from the `exchanges` namespace, so a caller can
+  build an interaction from an interaction URL.
+
+### Fixed
+- Accept `credentials` in `CredentialStore.add()` again. The `records` check
+  ran before `records` was built from `credentials`, so every call that
+  passed `credentials` threw.
+
+### Changed
+- `exchanges.start()` called with an `interaction` and no CHAPI event now
+  logs a failed exchange's result (name and status only) instead of leaving
+  the rejection unhandled.
+
 ## 15.11.0 - 2026-10-29
 
 ### Added
