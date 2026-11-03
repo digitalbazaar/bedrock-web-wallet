@@ -31,10 +31,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+    - run: |
+        npm install
+        cd test-unit
+        npm install
     - name: Run unit tests with Node.js ${{ matrix.node-version }} and vitest
       run: |
         cd test-unit
-        npm install
         npm test
   test-karma:
     needs: [lint]
