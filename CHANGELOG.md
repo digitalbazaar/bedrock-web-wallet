@@ -1,5 +1,16 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.11.1 - 2026-11-dd
+
+### Fixed
+- Return the first group's `flat` and `and` results from
+  `presentations.match()` when every query in a VPR has a `group`.
+- Apply the `maxQueries` limit to the total number of queries across groups.
+- Throw a `NotSupportedError` from `presentations.match()` when every query
+  group exceeds the `maxQueries` limit.
+- Return empty `flat` and `and` results from `presentations.match()` when no
+  query type in a VPR is supported.
+
 ## 15.11.0 - 2026-10-29
 
 ### Added
