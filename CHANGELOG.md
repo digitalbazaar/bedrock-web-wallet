@@ -1,6 +1,6 @@
 # bedrock-web-wallet ChangeLog
 
-## 15.11.1 - 2026-11-dd
+## 15.11.1 - 2026-11-09
 
 ### Fixed
 - Return the first group's `flat` and `and` results from
