@@ -1,5 +1,10 @@
 # bedrock-web-wallet ChangeLog
 
+## 15.11.2 - 2026-11-dd
+
+### Changed
+- Update dependencies.
+
 ## 15.11.1 - 2026-11-09
 
 ### Fixed
